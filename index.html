@@ -54,7 +54,7 @@
     .projects { position:relative; overflow:clip; padding:0; background:transparent; color:#050505; }
     .project-stage { --reveal:0; --copy:0; position:relative; height:100svh; background:transparent; }
     .project-card { position:sticky; top:0; width:100%; height:100svh; overflow:hidden; background:transparent; }
-    .project-media { position:absolute; inset:0; width:100vw; height:100svh; margin:0; overflow:hidden; background:transparent; clip-path:inset(0 calc((1 - var(--reveal)) * 50%) 0 calc((1 - var(--reveal)) * 50%)); transform:scale(calc(.84 + var(--reveal) * .16)); filter:brightness(calc(.72 + var(--reveal) * .28)) saturate(calc(.78 + var(--reveal) * .22)); will-change:clip-path,transform,filter; }
+    .project-media { position:absolute; inset:0; width:100vw; height:100svh; margin:0; overflow:hidden; background:transparent; clip-path:inset(0 calc((1 - var(--reveal)) * 50%) 0 calc((1 - var(--reveal)) * 50%)); transform:scale(calc(.84 + var(--reveal) * .16)); filter:brightness(calc(.72 + var(--reveal) * .28)) saturate(calc(.78 + var(--reveal) * .22)); will-change:transform; }
     .project-media::after { content:none; }
     .project-media img { display:block; width:100%; height:100%; object-fit:cover; transform:scale(calc(1.18 - var(--reveal) * .18)); will-change:transform; }
     /* Афиша — цельный исходник: не режем даты, адрес и нижний знак ради заполнения экрана. */
@@ -67,7 +67,7 @@
     .event-info__number { font-size:clamp(18px,2vw,30px); line-height:1; }
     .event-info__kicker { margin:0; color:#f0b6a8; font-size:clamp(15px,1.5vw,23px); letter-spacing:.04em; text-transform:uppercase; }
     .event-info__title { grid-column:2; margin:clamp(18px,4vw,56px) 0 0; color:#ff513f; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(46px,8vw,132px); font-weight:400; letter-spacing:-.065em; line-height:.82; text-transform:uppercase; }
-    .event-info__text { grid-column:2; max-width:760px; margin:clamp(22px,4vw,52px) 0 0; color:#f4ebe5; font-size:clamp(17px,1.8vw,26px); line-height:1.25; }
+    .event-info__text { grid-column:2; max-width:760px; margin:clamp(22px,4vw,52px) 0 0; color:#f4ebe5; font-size:clamp(20px,2vw,30px); line-height:1.32; }
     .event-info__details { grid-column:2; margin:clamp(22px,3vw,44px) 0 0; color:#ff6959; font-size:clamp(17px,1.7vw,25px); line-height:1.13; text-transform:uppercase; }
     
     .event-info__body { grid-column:2; }
@@ -75,8 +75,8 @@
     .event-info__body .event-info__text + .event-info__text { margin-top:clamp(10px,1.5vw,18px); }
     .event-info__stats { grid-column:2; display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(12px,2vw,24px); margin:clamp(28px,4vw,52px) 0 0; }
     .event-info__stats .stat { display:flex; flex-direction:column; gap:4px; }
-    .event-info__stats .stat-num { font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(20px,2.4vw,34px); font-weight:400; letter-spacing:-.04em; line-height:1; text-transform:uppercase; }
-    .event-info__stats .stat-label { font-size:clamp(11px,1.15vw,15px); font-weight:400; line-height:1.15; text-transform:uppercase; letter-spacing:.02em; opacity:.72; }
+    .event-info__stats .stat-num { font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(26px,3vw,44px); font-weight:400; letter-spacing:-.04em; line-height:1; text-transform:uppercase; }
+    .event-info__stats .stat-label { font-size:clamp(14px,1.4vw,20px); font-weight:400; line-height:1.2; text-transform:uppercase; letter-spacing:.02em; opacity:.78; }
     @media (max-width:768px) { .event-info__stats { grid-template-columns:repeat(2,1fr); } .event-info__stats .stat-num { font-size:clamp(18px,5vw,24px); } .event-info__stats .stat-label { font-size:12px; } }
 .event-info--red { background:radial-gradient(circle at 88% 10%,#ff5147 0,transparent 31%),linear-gradient(135deg,#e30b08 0%,#a90308 100%); border-color:#5a090a; color:#1d0807; }.event-info--red .event-info__kicker { color:#4c1511; }.event-info--red .event-info__title { color:#1a0807; }.event-info--red .event-info__text { color:#2c0b09; }.event-info--red .event-info__details { color:#4b100d; }
 
@@ -88,7 +88,7 @@
     .legal-title { margin:0 0 12px; color:#ff6959; font-size:12px; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }.legal-text,.legal-links { margin:0; color:#f0b6a8; font-size:14px; line-height:1.52; }.legal-links { display:grid; gap:8px; }.legal-grid a { color:#fff4ee; text-decoration:none; border-bottom:1px solid rgba(255,105,89,.52); width:max-content; max-width:100%; }.legal-grid a:hover { color:#ff6959; }
     .developer-badge { display:inline-block; margin-top:clamp(20px,3vw,34px); padding:0; color:rgba(255,105,89,.72); font-size:10px; font-weight:700; letter-spacing:.04em; line-height:1.2; text-decoration:underline; text-decoration-color:rgba(255,105,89,.36); text-underline-offset:3px; text-transform:none; }
     @media (max-width:768px) { .site-brand{top:4px;left:18px;width:56px;height:56px}.tmenu-mobile{top:0;right:0}.site-menu{padding:92px 9vw 8vw}.site-footer{padding:50px 8vw 28px}.faq-grid,.legal-grid{grid-template-columns:1fr;gap:0}.site-faq__title{font-size:clamp(58px,18vw,84px)}.legal-grid{padding:38px 0}.developer-badge{font-size:9px} }
-    @media (max-width:768px) { .project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.event-info{min-height:100svh;margin-top:0;padding:34px 8vw 38px;grid-template-columns:42px 1fr;gap:16px}.event-info__title{font-size:clamp(52px,15vw,80px)}.event-info__text{font-size:18px}.event-info__details{font-size:18px} }
+    @media (max-width:768px) { .project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.event-info{min-height:100svh;margin-top:0;padding:34px 8vw 38px;grid-template-columns:42px 1fr;gap:16px}.event-info__title{font-size:clamp(52px,15vw,80px)}.event-info__text{font-size:clamp(18px,4.2vw,22px);line-height:1.35}.event-info__details{font-size:clamp(16px,3.8vw,20px)} }
     @media (prefers-reduced-motion:reduce) { .project-media{clip-path:none;transform:none;filter:none}.project-media img{transform:none}.project-copy{transform:none;opacity:1}.site-menu,.site-menu::before,.site-menu::after,.site-menu a,.t-menuburger span,#overlay-logo,.hero-kicker{transition:none;filter:none} }
     body.menu-open { overflow:hidden; }
 
@@ -193,33 +193,37 @@
     function startProjectReveals() {
       if (projectRevealsStarted) return;
       projectRevealsStarted=true;
-      // Как на Il Capo: прогресс раскрытия — это положение sticky-секции в скролле,
-      // а не однократное событие появления элемента во viewport.
       const states=[...document.querySelectorAll('[data-project]')].map(card=>({card,stage:card.closest('.project-stage'),current:0,target:0}));
-      let frame=0;
-      const render=()=>{
-        let keepAnimating=false;
-        states.forEach(state=>{
-          const rect=state.stage.getBoundingClientRect();
-          const travel=state.stage.offsetHeight-window.innerHeight;
-          // Карточки теперь занимают ровно один экран: без пустого хвоста между картинкой и текстом.
-          // В этом режиме раскрываем карточку целиком сразу при её входе в viewport.
-          const raw=travel<=1 ? (rect.top<window.innerHeight*.65 ? 1 : 0) : Math.max(0,Math.min(1,((window.innerHeight*.65)-rect.top)/(window.innerHeight*.65+travel*.5)));
-          state.target=raw;
-          // Плавность Lenis/Framer Motion: даже при резком wheel-событии маска не прыгает кадром.
-          state.current+= (state.target-state.current)*.06;
-          if(Math.abs(state.target-state.current)<.001) state.current=state.target;
-          else keepAnimating=true;
-          const copy=Math.max(0,Math.min(1,(state.current-.34)/.5));
-          state.card.style.setProperty('--reveal',state.current.toFixed(4));
-          state.card.style.setProperty('--copy',copy.toFixed(4));
+      let lastScrollY=-1, running=false;
+      function tick() {
+        states.forEach(state => {
+          const rect = state.stage.getBoundingClientRect();
+          const travel = state.stage.offsetHeight - window.innerHeight;
+          const vh = window.innerHeight;
+          // Раскрытие: начинается когда секция входит в нижнюю треть viewport,
+          // завершается к середине scroll-отрезка. При скролле вверх — корректно возвращается к 0.
+          const raw = travel <= 1
+            ? (rect.top < vh * 0.65 ? 1 : 0)
+            : Math.max(0, Math.min(1, (vh * 0.65 - rect.top) / (vh * 0.65 + travel * 0.5)));
+          state.target = raw;
+          // Плавная интерполяция — работает в обе стороны, даже после остановки скролла.
+          state.current += (state.target - state.current) * 0.08;
+          if (Math.abs(state.target - state.current) < 0.002) state.current = state.target;
+          const copy = Math.max(0, Math.min(1, (state.current - 0.34) / 0.5));
+          state.card.style.setProperty('--reveal', state.current.toFixed(4));
+          state.card.style.setProperty('--copy', copy.toFixed(4));
         });
-        frame=keepAnimating?requestAnimationFrame(render):0;
-      };
-      const requestRender=()=>{ if(!frame) frame=requestAnimationFrame(render); };
-      window.addEventListener('scroll',requestRender,{passive:true});
-      window.addEventListener('resize',requestRender);
-      requestRender();
+        // Проверяем: если любая карточка ещё не достигла target — продолжаем. Иначе останавливаемся до следующего scroll.
+        const allSettled = states.every(s => Math.abs(s.target - s.current) < 0.002);
+        if (allSettled) { running = false; return; }
+        requestAnimationFrame(tick);
+      }
+      function kick() {
+        if (!running) { running = true; requestAnimationFrame(tick); }
+      }
+      window.addEventListener('scroll', kick, { passive: true });
+      window.addEventListener('resize', kick);
+      kick();
     }
     function launchSite() {
       if (document.body.classList.contains('video-started')) return;
