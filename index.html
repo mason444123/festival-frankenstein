@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Festival Frankenstein</title>
+  <link rel="stylesheet" href="https://voroh.ru/sources/widget/dist/assets/widget-popup-style.css?v=1778061813">
+  <script defer src="https://voroh.ru/sources/widget/dist/assets/widget-popup.js?v=1778061813"></script>
   <style>
     * { box-sizing:border-box; }
     html, body { margin:0; min-height:100%; background:#0c0c0b; }
@@ -61,6 +63,15 @@
     .site-menu .menu-social { display:block; padding:0 0 4px; border:0; background:transparent; color:#a79a93; font-family:Arial,sans-serif; font-size:11px; font-weight:800; letter-spacing:.08em; line-height:1; text-decoration:none; text-transform:uppercase; transition:color .2s ease,transform .2s ease; }
     .site-menu .menu-social::after { content:none; }.site-menu .menu-social:hover,.site-menu .menu-social:focus-visible { color:#ff4b3d; background:transparent; transform:translateY(-3px); outline:none; }.site-menu .menu-social svg { display:none; }
 
+    /* Билетный виджет Voroh открывается поверх сайта, а не уводит посетителя на чужую страницу. */
+    .ticket-modal { position:fixed; z-index:20000; inset:0; display:grid; place-items:center; padding:18px; background:rgba(7,5,5,.76); backdrop-filter:blur(18px); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .25s ease,visibility 0s linear .25s; }
+    .ticket-modal.is-open { opacity:1; visibility:visible; pointer-events:auto; transition:opacity .25s ease; }
+    .ticket-modal__panel { position:relative; width:min(100%,680px); max-height:min(88dvh,780px); overflow:hidden; background:#0d0b0b; border:1px solid rgba(255,105,89,.5); box-shadow:18px 18px 0 rgba(104,9,8,.72); transform:translateY(20px) scale(.98); transition:transform .3s cubic-bezier(.22,1,.36,1); }
+    .ticket-modal.is-open .ticket-modal__panel { transform:translateY(0) scale(1); }.ticket-modal__head { display:flex; align-items:center; justify-content:space-between; min-height:68px; padding:16px 20px 15px 24px; border-bottom:1px solid rgba(255,105,89,.25); }.ticket-modal__eyebrow { margin:0 0 3px; color:#ff6959; font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }.ticket-modal__title { margin:0; color:#f4ebe5; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(25px,5vw,40px); font-weight:400; letter-spacing:-.055em; line-height:.85; }.ticket-modal__close { width:38px; height:38px; flex:0 0 auto; border:1px solid rgba(255,105,89,.48); border-radius:0; background:transparent; color:#f4ebe5; font-size:25px; font-weight:300; line-height:1; cursor:pointer; transition:background .2s,color .2s; }.ticket-modal__close:hover,.ticket-modal__close:focus-visible { background:#e30b08; color:#170606; outline:none; }.ticket-modal__body { max-height:calc(min(88dvh,780px) - 68px); overflow:auto; background:#fff; }.widget-inner-iframe { width:100%; min-height:520px; }.widget-tabs__iframe { display:block; width:100%; min-height:520px; border:0; }
+
+    /* Небольшое уведомление, которое не перекрывает событие. */
+    .cookie-note { position:fixed; z-index:10003; right:16px; bottom:16px; width:min(350px,calc(100vw - 32px)); padding:15px 16px 14px; border:1px solid rgba(255,105,89,.42); background:rgba(14,11,11,.94); box-shadow:7px 7px 0 rgba(91,9,9,.58); color:#f4ebe5; backdrop-filter:blur(16px); }.cookie-note[hidden] { display:none; }.cookie-note__text { margin:0 0 12px; font-size:12px; line-height:1.35; }.cookie-note__text a { color:#ff6959; text-underline-offset:3px; }.cookie-note__actions { display:flex; align-items:center; justify-content:space-between; gap:14px; }.cookie-note__label { color:#aa9c94; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }.cookie-note__accept { padding:8px 12px; border:0; border-radius:0; background:#e30b08; color:#190706; font-size:11px; font-weight:900; letter-spacing:.04em; cursor:pointer; text-transform:uppercase; }.cookie-note__accept:hover,.cookie-note__accept:focus-visible { background:#ff4b3d; color:#fff8f4; outline:none; }
+
     /* Тот же принцип, что у Il Capo: секция закрепляется, а раскрытие зависит от реального прогресса скролла — не от разового IntersectionObserver. */
     .projects { position:relative; overflow:clip; padding:0; background:transparent; color:#050505; }
     .project-stage { --reveal:0; --copy:0; position:relative; height:100svh; background:transparent; }
@@ -104,7 +115,7 @@
     @media (max-width:768px) { .site-brand{top:4px;left:18px;width:56px;height:56px}.tmenu-mobile{top:0;right:0}.site-menu{padding:92px 9vw 8vw}.site-footer{padding:50px 8vw 28px}.faq-grid,.legal-grid{grid-template-columns:1fr;gap:0}.site-faq__title{font-size:clamp(58px,18vw,84px)}.legal-grid{padding:38px 0}.developer-badge{font-size:9px} }
     @media (max-width:768px) { .project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.event-info{min-height:100svh;margin-top:0;padding:34px 8vw 38px;grid-template-columns:42px 1fr;gap:16px}.event-info__title{font-size:clamp(52px,15vw,80px)}.event-info__text{font-size:clamp(18px,4.2vw,22px);line-height:1.35}.event-info__details{font-size:clamp(16px,3.8vw,20px)} }
     @media (prefers-reduced-motion:reduce) { .project-media{clip-path:none;transform:none;filter:none}.project-media img{transform:none}.project-copy{transform:none;opacity:1}.site-menu,.site-menu::before,.site-menu::after,.site-menu a,.t-menuburger span,#overlay-logo,.hero-kicker{transition:none;filter:none} }
-    body.menu-open { overflow:hidden; }
+    body.menu-open { overflow:hidden; } body.ticket-open { overflow:hidden; }
 
   </style>
 </head>
@@ -123,7 +134,7 @@
     <a class="nav-link" style="--i:4" href="https://mason444123.github.io/sait-design-lab/shop.html"><span class="nav-index">05</span><span>Магазин</span></a>
     <a class="nav-link" style="--i:5" href="https://mason444123.github.io/sait-design-lab/past-events.html"><span class="nav-index">06</span><span>Прошлые события</span></a>
     <a class="nav-link" style="--i:6" href="https://mason444123.github.io/sait-design-lab/#faq"><span class="nav-index">07</span><span>FAQ</span></a>
-    <a style="--i:7" href="https://voroh.ru/widget/event/1036665/019ef4a4-09d5-8687-8cf4-a35183b37649/" target="_blank" rel="noopener" class="nav-menu-buy">Купить билет</a>
+    <button style="--i:7" type="button" class="nav-menu-buy" id="ticketOpen">Купить билет</button>
     <div class="menu-socials" aria-label="Социальные сети">
       <a href="https://t.me/custom_843" target="_blank" rel="noopener" class="menu-social" aria-label="Telegram">Telegram</a>
       <a href="https://www.instagram.com/custom.843?igsh=MW56eTl0b2FhZ203OQ==" target="_blank" rel="noopener" class="menu-social" aria-label="Instagram">Instagram</a>
@@ -131,6 +142,13 @@
       <a href="https://www.tiktok.com/@custom_843?_r=1&_t=ZS-96UOwNMbkpg" target="_blank" rel="noopener" class="menu-social" aria-label="TikTok">TikTok</a>
     </div>
   </nav>
+
+  <section class="ticket-modal" id="ticketModal" aria-hidden="true" aria-labelledby="ticketTitle" role="dialog" aria-modal="true">
+    <div class="ticket-modal__panel">
+      <header class="ticket-modal__head"><div><p class="ticket-modal__eyebrow">Билеты</p><h2 class="ticket-modal__title" id="ticketTitle">Чалбар × Кастом</h2></div><button class="ticket-modal__close" id="ticketClose" type="button" aria-label="Закрыть покупку билета">×</button></header>
+      <div class="ticket-modal__body"><div class="widget-inner-iframe"><iframe class="widget-tabs__iframe" referrerpolicy="same-origin" data-analytic="iframe" frameborder="0" id="widget-iframe" data-src="https://voroh.ru/widget/event/1037721/019f79b9-5284-8ac8-a881-cb497bfa5e38/" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads" allow="clipboard-write" title="Покупка билетов"></iframe></div></div>
+    </div>
+  </section>
 
   <div class="curtain left"></div><div class="curtain right"></div>
   <main id="video-wrapper">
@@ -183,6 +201,10 @@
     </div>
     <a class="developer-badge" href="https://t.me/bugaev_space" target="_blank" rel="noopener">Разработчик сайта</a>
   </footer>
+  <aside class="cookie-note" id="cookieNote" aria-label="Уведомление о cookies" hidden>
+    <p class="cookie-note__text">Мы используем cookies, чтобы сайт работал стабильно. <a href="https://mason444123.github.io/sait-design-lab/cookie-policy.html" target="_blank" rel="noopener">Подробнее</a></p>
+    <div class="cookie-note__actions"><span class="cookie-note__label">Всё ок?</span><button class="cookie-note__accept" id="cookieAccept" type="button">Понятно</button></div>
+  </aside>
   <script>
     const video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container');
     const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu'), mobileMenuBar=document.getElementById('mobileMenuBar'), siteBrand=document.getElementById('siteBrand'), bgfallback=document.getElementById('bgfallback');
@@ -269,7 +291,31 @@
     else scheduleLaunch();
     const toggleMenu=forceOpen=>{ const open=forceOpen ?? menuTrigger.getAttribute('aria-expanded')!=='true'; menuTrigger.setAttribute('aria-expanded',String(open)); menu.classList.toggle('is-open',open); menu.setAttribute('aria-hidden',String(!open)); document.body.classList.toggle('menu-open',open); };
     menuTrigger.addEventListener('click',()=>toggleMenu());
-    document.addEventListener('keydown',event=>{ if(event.key==='Escape' && menuTrigger.getAttribute('aria-expanded')==='true') toggleMenu(false); });
+
+    const ticketModal=document.getElementById('ticketModal'), ticketOpen=document.getElementById('ticketOpen'), ticketClose=document.getElementById('ticketClose'), ticketFrame=document.getElementById('widget-iframe');
+    let ticketFocusReturn=null;
+    function setTicketModal(open) {
+      if (!ticketModal) return;
+      if (open) {
+        ticketFocusReturn=document.activeElement;
+        if (!ticketFrame.getAttribute('src')) ticketFrame.src=ticketFrame.dataset.src;
+        toggleMenu(false);
+        ticketModal.classList.add('is-open'); ticketModal.setAttribute('aria-hidden','false'); document.body.classList.add('ticket-open');
+        ticketClose.focus();
+      } else {
+        ticketModal.classList.remove('is-open'); ticketModal.setAttribute('aria-hidden','true'); document.body.classList.remove('ticket-open');
+        ticketFocusReturn?.focus?.();
+      }
+    }
+    ticketOpen?.addEventListener('click',()=>setTicketModal(true));
+    ticketClose?.addEventListener('click',()=>setTicketModal(false));
+    ticketModal?.addEventListener('click',event=>{ if(event.target===ticketModal) setTicketModal(false); });
+
+    const cookieNote=document.getElementById('cookieNote'), cookieAccept=document.getElementById('cookieAccept'), cookieKey='custom843_cookie_seen';
+    try { if (!localStorage.getItem(cookieKey)) cookieNote.hidden=false; } catch (_) { cookieNote.hidden=false; }
+    cookieAccept?.addEventListener('click',()=>{ try { localStorage.setItem(cookieKey,'1'); } catch (_) {} cookieNote.hidden=true; });
+
+    document.addEventListener('keydown',event=>{ if(event.key!=='Escape') return; if(ticketModal?.classList.contains('is-open')) setTicketModal(false); else if(menuTrigger.getAttribute('aria-expanded')==='true') toggleMenu(false); });
   </script>
 </body>
 </html>
