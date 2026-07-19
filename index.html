@@ -69,8 +69,8 @@
     .site-footer__event { margin:0; color:#f0b6a8; font-size:clamp(14px,1.5vw,22px); line-height:1.22; text-transform:uppercase; }.site-footer__age { color:#ff4b3d; font-size:clamp(42px,6vw,92px); font-weight:900; line-height:.8; }
     .legal-grid { display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:clamp(28px,5vw,72px); padding:clamp(36px,6vw,76px) 0; border-bottom:1px solid rgba(255,92,77,.22); }
     .legal-title { margin:0 0 12px; color:#ff6959; font-size:12px; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }.legal-text,.legal-links { margin:0; color:#f0b6a8; font-size:14px; line-height:1.52; }.legal-links { display:grid; gap:8px; }.legal-grid a { color:#fff4ee; text-decoration:none; border-bottom:1px solid rgba(255,105,89,.52); width:max-content; max-width:100%; }.legal-grid a:hover { color:#ff6959; }
-    .developer-badge { display:flex; justify-content:space-between; gap:20px; align-items:center; margin-top:clamp(24px,4vw,46px); padding:13px 0; color:#ff6959; text-decoration:none; font-size:12px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }.developer-badge::after { content:'↗'; font-size:18px; line-height:1; }
-    @media (max-width:768px) { .site-footer{padding:50px 8vw 28px}.site-footer__top,.legal-grid{grid-template-columns:1fr;gap:26px}.site-footer__brand{font-size:clamp(56px,18vw,80px)}.site-footer__age{font-size:58px}.legal-grid{padding:38px 0}.developer-badge{align-items:flex-start;line-height:1.25} }
+    .developer-badge { display:inline-block; margin-top:clamp(20px,3vw,34px); padding:0; color:rgba(255,105,89,.72); font-size:10px; font-weight:700; letter-spacing:.04em; line-height:1.2; text-decoration:underline; text-decoration-color:rgba(255,105,89,.36); text-underline-offset:3px; text-transform:none; }
+    @media (max-width:768px) { .site-footer{padding:50px 8vw 28px}.site-footer__top,.legal-grid{grid-template-columns:1fr;gap:26px}.site-footer__brand{font-size:clamp(56px,18vw,80px)}.site-footer__age{font-size:58px}.legal-grid{padding:38px 0}.developer-badge{font-size:9px} }
     @media (max-width:768px) { .project-stage{padding:76px 0 0}.project-media{width:100vw;aspect-ratio:.64}.project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.event-info{min-height:0;margin-top:0;padding:34px 8vw 38px;grid-template-columns:42px 1fr;gap:16px}.event-info__title{font-size:clamp(52px,15vw,80px)}.event-info__text{font-size:18px}.event-info__details{font-size:18px}.project-stage:first-child{padding-top:26px} }
     @media (prefers-reduced-motion:reduce) { .project-media,.project-media img,.project-copy{transition:none}.project-media{clip-path:none}.project-copy{transform:none;opacity:1} }
     @media (min-width:769px) { .tmenu-mobile { display:none !important; } }
@@ -122,26 +122,31 @@
       <div><p class="legal-title">Документы</p><nav class="legal-links" aria-label="Правовые документы"><a href="https://mason444123.github.io/sait-design-lab/offer.html" target="_blank" rel="noopener">Публичная оферта</a><a href="https://mason444123.github.io/sait-design-lab/rules.html" target="_blank" rel="noopener">Правила посещения</a><a href="https://mason444123.github.io/sait-design-lab/refund.html" target="_blank" rel="noopener">Условия возврата</a><a href="https://mason444123.github.io/sait-design-lab/privacy-policy.html" target="_blank" rel="noopener">Политика обработки персональных данных</a><a href="https://mason444123.github.io/sait-design-lab/cookie-policy.html" target="_blank" rel="noopener">Политика cookies</a></nav></div>
       <div><p class="legal-title">Вход и данные</p><p class="legal-text">Мероприятие 18+. На входе может проверяться возраст по оригиналу документа без копирования паспортных данных. Организатор не обрабатывает полные данные банковских карт.</p></div>
     </div>
-    <a class="developer-badge" href="https://t.me/bugaev_space" target="_blank" rel="noopener"><span>Разработчик сайта</span><span>@bugaev_space</span></a>
+    <a class="developer-badge" href="https://t.me/bugaev_space" target="_blank" rel="noopener">Разработчик сайта</a>
   </footer>
   <script>
     const cover=document.getElementById('video-cover'), video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container'), play=document.getElementById('play-button');
     const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu'), mobileMenuBar=document.getElementById('mobileMenuBar');
+    let projectRevealsStarted=false;
+    function startProjectReveals() {
+      if (projectRevealsStarted) return;
+      projectRevealsStarted=true;
+      document.querySelectorAll('[data-project]').forEach(card => {
+        const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+          if (!entry.isIntersecting || entry.target.classList.contains('is-visible')) return;
+          // Два кадра сохраняют исходную узкую форму до начала перехода.
+          requestAnimationFrame(() => requestAnimationFrame(() => entry.target.classList.add('is-visible')));
+          observer.unobserve(entry.target);
+        }), { threshold:0.01, rootMargin:'0px 0px -18% 0px' });
+        observer.observe(card);
+      });
+    }
     play.addEventListener('click', async event => {
       event.stopPropagation(); cover.style.opacity='0';
-      setTimeout(()=>{ cover.style.display='none'; document.body.classList.add('video-started'); video.style.opacity='1'; mobileMenuBar.classList.add('is-visible'); },500);
+      setTimeout(()=>{ cover.style.display='none'; document.body.classList.add('video-started'); video.style.opacity='1'; mobileMenuBar.classList.add('is-visible'); startProjectReveals(); },500);
       try { await video.play(); setTimeout(()=>{ overlay.style.opacity='1'; },1500); } catch(error) { console.warn('Видео не запустилось',error); }
     });
     menuTrigger.addEventListener('click',()=>{ const open=menuTrigger.getAttribute('aria-expanded')==='true'; menuTrigger.setAttribute('aria-expanded',String(!open)); menu.classList.toggle('is-open',!open); menu.setAttribute('aria-hidden',String(open)); });
-    document.querySelectorAll('[data-project]').forEach(card => {
-      const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-        if (!entry.isIntersecting || entry.target.classList.contains('is-visible')) return;
-        // Первый кадр фиксируется отдельно: браузер не схлопывает начальное состояние в финальное.
-        requestAnimationFrame(() => requestAnimationFrame(() => entry.target.classList.add('is-visible')));
-        observer.unobserve(entry.target);
-      }), { threshold:0.01, rootMargin:'0px 0px -18% 0px' });
-      observer.observe(card);
-    });
   </script>
 </body>
 </html>
