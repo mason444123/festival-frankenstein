@@ -51,14 +51,14 @@
     .site-menu .nav-menu-buy { margin-top:28px; color:#bf1212; }
 
     /* Тот же принцип, что у Il Capo: секция закрепляется, а раскрытие зависит от реального прогресса скролла — не от разового IntersectionObserver. */
-    .projects { position:relative; overflow:clip; padding:0; background:#000; color:#050505; }
-    .project-stage { --reveal:0; --copy:0; position:relative; height:100svh; background:#000; }
-    .project-card { position:sticky; top:0; width:100%; height:100svh; overflow:hidden; background:#000; }
+    .projects { position:relative; overflow:clip; padding:0; background:transparent; color:#050505; }
+    .project-stage { --reveal:0; --copy:0; position:relative; height:100svh; background:transparent; }
+    .project-card { position:sticky; top:0; width:100%; height:100svh; overflow:hidden; background:transparent; }
     .project-media { position:absolute; inset:0; width:100vw; height:100svh; margin:0; overflow:hidden; background:#2b1614; clip-path:inset(0 calc((1 - var(--reveal)) * 50%) 0 calc((1 - var(--reveal)) * 50%)); transform:scale(calc(.84 + var(--reveal) * .16)); filter:brightness(calc(.72 + var(--reveal) * .28)) saturate(calc(.78 + var(--reveal) * .22)); will-change:clip-path,transform,filter; }
     .project-media::after { content:''; position:absolute; z-index:1; inset:0; background:rgba(0,0,0,.38); pointer-events:none; opacity:calc(.4 - var(--reveal) * .25); }
     .project-media img { display:block; width:100%; height:100%; object-fit:cover; transform:scale(calc(1.18 - var(--reveal) * .18)); will-change:transform; }
     /* Афиша — цельный исходник: не режем даты, адрес и нижний знак ради заполнения экрана. */
-    .project-media--poster { background:#080605; }
+    .project-media--poster { background:transparent; }
     .project-media--poster img { object-fit:contain; transform:none; }
     .project-copy { position:absolute; z-index:2; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:11% 5% 9%; color:#d60001; text-align:center; pointer-events:none; opacity:var(--copy); transform:translateY(calc((1 - var(--copy)) * 22px)); will-change:opacity,transform; }
     .project-title { margin:0; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(52px,8.6vw,126px); font-weight:400; letter-spacing:-.07em; line-height:.84; text-transform:uppercase; }
@@ -106,8 +106,6 @@
   <div class="curtain left"></div><div class="curtain right"></div>
   <main id="video-wrapper">
     <video id="bgvid" autoplay muted loop playsinline preload="auto" poster="assets/hero-mobile-fallback.webp">
-      <source media="(max-width: 768px)" src="assets/hero-mobile-ios.mp4" type="video/mp4">
-      <source media="(min-width: 769px)" src="assets/hero-desktop-ios.mp4" type="video/mp4">
       <source media="(max-width: 768px)" src="assets/hero-mobile.mp4" type="video/mp4">
       <source src="assets/hero-desktop.mp4" type="video/mp4">
     </video>
@@ -200,7 +198,7 @@
           const raw=travel<=1 ? (rect.top<window.innerHeight*.65 ? 1 : 0) : Math.max(0,Math.min(1,((window.innerHeight*.65)-rect.top)/(window.innerHeight*.65+travel*.5)));
           state.target=raw;
           // Плавность Lenis/Framer Motion: даже при резком wheel-событии маска не прыгает кадром.
-          state.current+= (state.target-state.current)*.14;
+          state.current+= (state.target-state.current)*.06;
           if(Math.abs(state.target-state.current)<.001) state.current=state.target;
           else keepAnimating=true;
           const copy=Math.max(0,Math.min(1,(state.current-.34)/.5));
