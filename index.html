@@ -13,7 +13,7 @@
     #video-wrapper { position:relative; width:100%; height:100vh; height:100svh; overflow:hidden; background:#000; }
     #bgvid { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; z-index:0; opacity:0; transition:opacity 1s ease; }
     #overlay-container { position:absolute; inset:0; background:rgba(0,0,0,.35); display:flex; justify-content:center; align-items:center; z-index:2; opacity:0; transition:opacity 1s ease; pointer-events:none; }
-    #overlay-logo { width:80vw; max-width:800px; min-width:180px; display:block; opacity:.85; }
+    #overlay-logo { width:80vw; max-width:800px; min-width:180px; display:block; opacity:.85; color:#fff; text-align:center; font-family:Arial,Helvetica,sans-serif; font-size:clamp(42px,10vw,154px); font-weight:900; letter-spacing:-.075em; line-height:.82; text-transform:lowercase; }
 
     #video-cover { position:fixed; inset:0; width:100vw; height:100vh; height:100svh; background:#000; display:flex; justify-content:center; align-items:center; flex-direction:column; z-index:9999; cursor:pointer; transition:opacity .5s ease; overflow:hidden; }
     #video-cover img { width:80vw; max-width:800px; min-width:180px; opacity:.85; margin-bottom:20px; }
@@ -58,7 +58,7 @@
       <source media="(max-width: 768px)" src="assets/hero-mobile.mp4" type="video/mp4">
       <source src="assets/hero-desktop.mp4" type="video/mp4">
     </video>
-    <div id="overlay-container"><img id="overlay-logo" src="https://sandlerstudio.ru/wp-content/uploads/2026/03/%D0%BB%D0%BE%D0%B3%D0%BE2026.png" alt="Логотип"></div>
+    <div id="overlay-container"><div id="overlay-logo" aria-label="custom843">custom843</div></div>
   </main>
   <script>
     const cover=document.getElementById('video-cover'), video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container'), play=document.getElementById('play-button');
