@@ -104,7 +104,7 @@
   </div>
   <div class="curtain left"></div><div class="curtain right"></div>
   <main id="video-wrapper">
-    <video id="bgvid" muted loop playsinline preload="metadata">
+    <video id="bgvid" autoplay muted loop playsinline preload="auto">
       <source media="(max-width: 768px)" src="assets/hero-mobile.mp4" type="video/mp4">
       <source src="assets/hero-desktop.mp4" type="video/mp4">
     </video>
@@ -194,7 +194,9 @@
         siteBrand.classList.add('is-visible');
         startProjectReveals();
       },180);
-      video.play().then(()=>setTimeout(()=>{ overlay.style.opacity='1'; },1500)).catch(error=>console.warn('Видео не запустилось',error));
+      video.muted=true;
+      video.defaultMuted=true;
+      video.play().then(()=>setTimeout(()=>{ overlay.style.opacity='1'; },1500)).catch(error=>console.warn('Автовоспроизведение видео заблокировано',error));
     }
     window.addEventListener('load',()=>setTimeout(launchSite,80),{once:true});
     const toggleMenu=forceOpen=>{ const open=forceOpen ?? menuTrigger.getAttribute('aria-expanded')!=='true'; menuTrigger.setAttribute('aria-expanded',String(open)); menu.classList.toggle('is-open',open); menu.setAttribute('aria-hidden',String(!open)); document.body.classList.toggle('menu-open',open); };
