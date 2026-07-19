@@ -8,9 +8,7 @@
     * { box-sizing:border-box; }
     html, body { margin:0; min-height:100%; background:#000; }
     body { overflow-x:hidden; font-family:Arial,Helvetica,sans-serif; }
-    /* Тонкая стеклянная шапка: нижняя граница растворяется в кадре, а не режет его полосой. */
-    body::before { content:''; position:fixed; z-index:10001; top:0; left:0; right:0; height:92px; pointer-events:none; opacity:0; visibility:hidden; background:linear-gradient(180deg,rgba(5,5,5,.40) 0%,rgba(5,5,5,.30) 38%,rgba(5,5,5,.12) 66%,transparent 100%); -webkit-backdrop-filter:blur(14px) saturate(.88); backdrop-filter:blur(14px) saturate(.88); -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 42%,rgba(0,0,0,.52) 72%,transparent 100%); mask-image:linear-gradient(to bottom,#000 0%,#000 42%,rgba(0,0,0,.52) 72%,transparent 100%); transition:opacity .38s ease,visibility 0s linear .38s; }
-    body.video-started:not(.menu-open)::before { opacity:1; visibility:visible; transition:opacity .38s ease; }
+    /* Верхняя навигация без подложки: только логотип и кнопка меню. */
 
     /* SandlerFest hero — copied interaction and geometry */
     #video-wrapper { position:relative; width:100%; height:100vh; height:100svh; height:100dvh; min-height:100dvh; overflow:hidden; background:#000; }
@@ -43,8 +41,8 @@
     .t-menuburger span:nth-child(2), .t-menuburger span:nth-child(3) { top:8px; width:80%; }
     .t-menuburger span:nth-child(4) { top:16px; width:28px; }
     .t-menuburger[aria-expanded="true"] span { background:#fff; }.t-menuburger[aria-expanded="true"] span:nth-child(1) { top:8px; transform:rotate(45deg); }.t-menuburger[aria-expanded="true"] span:nth-child(2),.t-menuburger[aria-expanded="true"] span:nth-child(3) { width:0; opacity:0; }.t-menuburger[aria-expanded="true"] span:nth-child(4) { top:8px; transform:rotate(-45deg); }
-    .site-menu { position:fixed; z-index:10000; inset:0; display:block; overflow:auto; visibility:hidden; pointer-events:none; clip-path:inset(0 0 100% 0); background:rgba(9,8,8,.48); color:#fff; padding:112px 9vw 8vw; -webkit-backdrop-filter:blur(24px) saturate(.9) contrast(1.08); backdrop-filter:blur(24px) saturate(.9) contrast(1.08); transition:clip-path .8s cubic-bezier(.83,0,.17,1),visibility 0s linear .8s; }
-    .site-menu::before,.site-menu::after { content:''; position:absolute; z-index:0; top:0; bottom:0; width:51%; opacity:1; background:rgba(3,3,3,.34); -webkit-backdrop-filter:blur(34px) saturate(.75); backdrop-filter:blur(34px) saturate(.75); will-change:transform,opacity; transition:transform .8s cubic-bezier(.83,0,.17,1),opacity .01s linear .79s; }.site-menu::before { left:0; transform:translateX(-102%); }.site-menu::after { right:0; transform:translateX(102%); transition-delay:0s,.06s; }
+    .site-menu { position:fixed; z-index:10000; inset:0; display:block; overflow:auto; visibility:hidden; pointer-events:none; clip-path:inset(0 0 100% 0); background:#0a0909; color:#fff; padding:112px 9vw 8vw; transition:clip-path .8s cubic-bezier(.83,0,.17,1),visibility 0s linear .8s; }
+    .site-menu::before,.site-menu::after { content:''; position:absolute; z-index:0; top:0; bottom:0; width:51%; opacity:1; background:#050505; will-change:transform,opacity; transition:transform .8s cubic-bezier(.83,0,.17,1),opacity .01s linear .79s; }.site-menu::before { left:0; transform:translateX(-102%); }.site-menu::after { right:0; transform:translateX(102%); transition-delay:0s,.06s; }
     .site-menu.is-open { visibility:visible; pointer-events:auto; clip-path:inset(0); transition:clip-path .8s cubic-bezier(.83,0,.17,1),visibility 0s; }.site-menu.is-open::before,.site-menu.is-open::after { opacity:0; transform:translateX(0); transition:transform .8s cubic-bezier(.83,0,.17,1),opacity .18s ease .62s; }
     .site-menu a { position:relative; z-index:1; display:block; width:max-content; color:#fff; text-decoration:none; font-size:clamp(28px,5vw,74px); line-height:1; margin:.17em 0; opacity:0; transform:translateY(115%); transition:opacity .15s ease,transform .65s cubic-bezier(.22,1,.36,1); transition-delay:0s; }.site-menu.is-open a { opacity:1; transform:translateY(0); transition-delay:calc(.24s + var(--i) * .07s); }
     .site-menu .nav-menu-buy { margin-top:28px; color:#bf1212; }
@@ -56,6 +54,9 @@
     .project-media { position:absolute; inset:0; width:100vw; height:100svh; margin:0; overflow:hidden; background:#2b1614; clip-path:inset(0 calc((1 - var(--reveal)) * 50%) 0 calc((1 - var(--reveal)) * 50%)); transform:scale(calc(.84 + var(--reveal) * .16)); filter:brightness(calc(.72 + var(--reveal) * .28)) saturate(calc(.78 + var(--reveal) * .22)); will-change:clip-path,transform,filter; }
     .project-media::after { content:''; position:absolute; z-index:1; inset:0; background:rgba(0,0,0,.38); pointer-events:none; opacity:calc(.4 - var(--reveal) * .25); }
     .project-media img { display:block; width:100%; height:100%; object-fit:cover; transform:scale(calc(1.18 - var(--reveal) * .18)); will-change:transform; }
+    /* Афиша — цельный исходник: не режем даты, адрес и нижний знак ради заполнения экрана. */
+    .project-media--poster { background:#080605; }
+    .project-media--poster img { object-fit:contain; transform:none; }
     .project-copy { position:absolute; z-index:2; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:11% 5% 9%; color:#d60001; text-align:center; pointer-events:none; opacity:var(--copy); transform:translateY(calc((1 - var(--copy)) * 22px)); will-change:opacity,transform; }
     .project-title { margin:0; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(52px,8.6vw,126px); font-weight:400; letter-spacing:-.07em; line-height:.84; text-transform:uppercase; }
     .project-subtitle { margin:0; font-size:clamp(16px,2.1vw,31px); font-weight:400; line-height:1; text-transform:uppercase; }
@@ -117,7 +118,7 @@
   <section class="projects" aria-label="Custom 843 projects">
     <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/custom/live-indoor.jpg" alt="Выступление на сцене" loading="lazy"><div class="project-copy"><h2 class="project-title">Live<br>Session</h2><p class="project-subtitle">Custom 843</p></div></figure></article></div>
     <article class="event-info event-info--red"><span class="event-info__number">01</span><p class="event-info__kicker">О команде Custom</p><h2 class="event-info__title">Кастом<br>843</h2><p class="event-info__text">Казанская команда, которая делает вечеринки с хип-хопом, R&amp;B, танцами и вниманием к тому, как всё выглядит на площадке.</p><p class="event-info__details">Музыка · люди · свет · звук</p></article>
-    <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/custom/tattoo-session.jpg" alt="Тату-сессия" loading="lazy"><div class="project-copy"><h2 class="project-title">Tattoo<br>Session</h2><p class="project-subtitle">Custom 843</p></div></figure></article></div>
+    <div class="project-stage"><article class="project-card" data-project><figure class="project-media project-media--poster"><img src="assets/custom/chalbar-poster.jpg" alt="Афиша события Чалбар × Кастом" loading="lazy"></figure></article></div>
     <article class="event-info"><span class="event-info__number">02</span><p class="event-info__kicker">01 августа / Чалбар</p><h2 class="event-info__title">Двор:<br>Чалбар<br>× Кастом</h2><p class="event-info__text">1 августа забираем Чалбар под себя: музыка, теннис, бирпонг, коктейли, резиденты и специальный гость.</p><p class="event-info__details">19:00—04:00 · 18+ FC/DC<br>Нариманова, 15А</p></article>
     <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/custom/live-outdoor.jpg" alt="Выступление на открытой сцене" loading="lazy"><div class="project-copy"><h2 class="project-title">Open<br>Air</h2><p class="project-subtitle">Custom 843</p></div></figure></article></div>
     <article class="event-info"><span class="event-info__number">03</span><p class="event-info__kicker">Meeting point</p><h2 class="event-info__title">Чалбар</h2><p class="event-info__text">Собирай лучший аутфит, отмечай своих и залетай. После таких ночей август только начинается.</p><p class="event-info__details">Нариманова, 15А<br>19:00—04:00 · 18+ FC/DC<br>Дресс-код — твой лучший аутфит.</p></article>
@@ -146,7 +147,25 @@
   <script>
     const video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container');
     const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu'), mobileMenuBar=document.getElementById('mobileMenuBar'), siteBrand=document.getElementById('siteBrand');
-    let projectRevealsStarted=false;
+    let projectRevealsStarted=false, overlayRevealed=false;
+    function revealVideoOverlay() {
+      if (overlayRevealed) return;
+      overlayRevealed=true;
+      setTimeout(()=>{ overlay.style.opacity='1'; },1500);
+    }
+    // In-app mobile browsers often load the video after DOMContentLoaded. Retry on every usable media state,
+    // while keeping it muted so playback never requires a tap.
+    function startBackgroundVideo() {
+      video.muted=true;
+      video.defaultMuted=true;
+      video.volume=0;
+      const attempt=video.play();
+      if (attempt && typeof attempt.then==='function') attempt.then(revealVideoOverlay).catch(()=>{});
+      else revealVideoOverlay();
+    }
+    ['loadedmetadata','loadeddata','canplay','canplaythrough'].forEach(eventName=>video.addEventListener(eventName,startBackgroundVideo));
+    window.addEventListener('pageshow',startBackgroundVideo);
+    document.addEventListener('visibilitychange',()=>{ if (!document.hidden) startBackgroundVideo(); });
     function startProjectReveals() {
       if (projectRevealsStarted) return;
       projectRevealsStarted=true;
@@ -188,9 +207,10 @@
       mobileMenuBar.classList.add('is-visible');
       siteBrand.classList.add('is-visible');
       startProjectReveals();
-      video.muted=true;
-      video.defaultMuted=true;
-      video.play().then(()=>setTimeout(()=>{ overlay.style.opacity='1'; },1500)).catch(error=>console.warn('Автовоспроизведение видео заблокировано',error));
+      startBackgroundVideo();
+      // Additional early retries cover Telegram's delayed media attachment on first navigation.
+      setTimeout(startBackgroundVideo,250);
+      setTimeout(startBackgroundVideo,1000);
     }
     const scheduleLaunch=()=>setTimeout(launchSite,80);
     if (document.readyState==='loading') document.addEventListener('DOMContentLoaded',scheduleLaunch,{once:true});
