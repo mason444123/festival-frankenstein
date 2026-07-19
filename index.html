@@ -207,8 +207,8 @@
             : Math.max(0, Math.min(1, (vh * 0.65 - rect.top) / (vh * 0.65 + travel * 0.5)));
           state.target = raw;
           // Плавная интерполяция — работает в обе стороны, даже после остановки скролла.
-          state.current += (state.target - state.current) * 0.08;
-          if (Math.abs(state.target - state.current) < 0.002) state.current = state.target;
+          state.current += (state.target - state.current) * 0.035;
+          if (Math.abs(state.target - state.current) < 0.0015) state.current = state.target;
           const copy = Math.max(0, Math.min(1, (state.current - 0.34) / 0.5));
           state.card.style.setProperty('--reveal', state.current.toFixed(4));
           state.card.style.setProperty('--copy', copy.toFixed(4));
