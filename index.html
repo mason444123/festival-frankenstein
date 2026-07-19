@@ -10,12 +10,12 @@
     body { overflow-x:hidden; font-family:Arial,Helvetica,sans-serif; }
 
     /* SandlerFest hero — copied interaction and geometry */
-    #video-wrapper { position:relative; width:100%; height:100vh; height:100svh; overflow:hidden; background:#000; }
+    #video-wrapper { position:relative; width:100%; height:100vh; height:100svh; height:100dvh; min-height:100dvh; overflow:hidden; background:#000; }
     #bgvid { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; z-index:0; opacity:0; transition:opacity 1s ease; }
     #overlay-container { position:absolute; inset:0; background:rgba(0,0,0,.35); display:flex; justify-content:center; align-items:center; z-index:2; opacity:0; transition:opacity 1s ease; pointer-events:none; }
     #overlay-logo { width:80vw; max-width:800px; min-width:180px; display:block; opacity:.85; color:#fff; text-align:center; font-family:Arial,Helvetica,sans-serif; font-size:clamp(42px,10vw,154px); font-weight:900; letter-spacing:-.075em; line-height:.82; text-transform:lowercase; }
 
-    #video-cover { position:fixed; inset:0; width:100vw; height:100vh; height:100svh; background:#000; display:flex; justify-content:center; align-items:center; flex-direction:column; z-index:9999; cursor:pointer; transition:opacity .5s ease; overflow:hidden; }
+    #video-cover { position:fixed; inset:0; width:100vw; height:100vh; height:100svh; height:100dvh; min-height:100dvh; background:#000; display:flex; justify-content:center; align-items:center; flex-direction:column; z-index:9999; cursor:pointer; transition:opacity .5s ease; overflow:hidden; }
     #cover-logo { width:80vw; max-width:800px; min-width:180px; margin:0 0 20px; color:#fff; text-align:center; font-family:Arial,Helvetica,sans-serif; font-size:clamp(42px,10vw,154px); font-weight:900; letter-spacing:-.075em; line-height:.82; text-transform:lowercase; opacity:.85; }
     #play-button { width:80px; height:80px; background:url('https://sandlerstudio.ru/wp-content/uploads/2025/08/4bb904e9d4c59a85298a015f06bf1fbe.png') no-repeat center/contain; border:0; outline:0; cursor:pointer; animation:pulse 2s infinite; z-index:1; }
     .curtain { position:fixed; top:0; width:50vw; height:100vh; height:100svh; background:#000; z-index:9998; transition:transform 1.5s ease; }
@@ -42,6 +42,8 @@
     /* Il Capo project sequence: red scroll canvas, portrait media card and typography layered over it. */
     .projects { position:relative; overflow:hidden; padding:0 0 clamp(80px,12vw,180px); background:#d60001; color:#050505; }
     .project-stage { position:relative; padding:clamp(100px,13vw,180px) 0 0; }
+    .project-stage:first-child { padding-top:clamp(34px,4vw,60px); }
+    .project-stage:first-child .project-meta { margin-bottom:clamp(16px,2vw,30px); }
     .project-card { position:relative; width:100%; overflow:visible; background:transparent; }
     .project-meta { width:min(84vw,1180px); margin:0 auto clamp(38px,5vw,76px); display:grid; grid-template-columns:clamp(38px,5vw,70px) 1fr; gap:clamp(16px,2.5vw,42px); font-size:clamp(17px,2.2vw,33px); font-weight:400; line-height:1; text-transform:uppercase; }
     .project-media { position:relative; width:100vw; aspect-ratio:.72; margin:0; overflow:hidden; background:#2b1614; clip-path:inset(0 48% 0 48%); transform:scale(.92); transition:clip-path 1.05s cubic-bezier(.77,0,.18,1),transform 1.05s cubic-bezier(.22,1,.36,1); }
@@ -56,7 +58,14 @@
     .project-play { position:absolute; z-index:2; top:50%; left:50%; display:grid; place-items:center; width:clamp(62px,8vw,116px); aspect-ratio:1; border:0; border-radius:50%; transform:translate(-50%,-50%) scale(.75); background:rgba(23,17,17,.68); color:#fff; opacity:0; transition:transform .5s cubic-bezier(.22,1,.36,1) .65s,opacity .2s .65s; }
     .project-play::before { content:''; margin-left:7%; border-top:16px solid transparent; border-bottom:16px solid transparent; border-left:25px solid currentColor; }
     .project-card.is-visible .project-play { transform:translate(-50%,-50%) scale(1); opacity:1; }
-    @media (max-width:768px) { .project-stage{padding:76px 0 0}.project-meta{width:84vw;margin-bottom:42px;font-size:18px;grid-template-columns:42px 1fr;gap:16px}.project-media{width:100vw;aspect-ratio:.64}.project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.project-play::before{border-top-width:13px;border-bottom-width:13px;border-left-width:20px} }
+    .event-info { min-height:clamp(440px,58vw,760px); margin-top:clamp(90px,12vw,170px); padding:clamp(26px,4vw,70px) 8vw; display:grid; grid-template-columns:clamp(42px,7vw,94px) 1fr; gap:clamp(18px,3vw,50px); align-content:space-between; border-top:1px solid #050505; border-bottom:1px solid #050505; background:#090909; color:#d60001; }
+    .event-info__number { font-size:clamp(18px,2vw,30px); line-height:1; }
+    .event-info__kicker { margin:0; font-size:clamp(15px,1.5vw,23px); letter-spacing:.04em; text-transform:uppercase; }
+    .event-info__title { grid-column:2; margin:clamp(22px,5vw,72px) 0 0; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(46px,8vw,132px); font-weight:400; letter-spacing:-.065em; line-height:.82; text-transform:uppercase; }
+    .event-info__text { grid-column:2; max-width:760px; margin:clamp(24px,5vw,68px) 0 0; color:#fff; font-size:clamp(17px,1.8vw,26px); line-height:1.25; }
+    .event-info__details { grid-column:2; margin:clamp(24px,4vw,60px) 0 0; color:#d60001; font-size:clamp(17px,1.7vw,25px); line-height:1.13; text-transform:uppercase; }
+    .event-info--red { background:#d60001; color:#050505; }.event-info--red .event-info__text { color:#050505; }.event-info--red .event-info__details { color:#050505; }
+    @media (max-width:768px) { .project-stage{padding:76px 0 0}.project-meta{width:84vw;margin-bottom:42px;font-size:18px;grid-template-columns:42px 1fr;gap:16px}.project-media{width:100vw;aspect-ratio:.64}.project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.project-play::before{border-top-width:13px;border-bottom-width:13px;border-left-width:20px}.event-info{min-height:58svh;margin-top:76px;padding:26px 8vw;grid-template-columns:42px 1fr;gap:16px}.event-info__title{font-size:clamp(52px,15vw,80px)}.event-info__text{font-size:18px}.event-info__details{font-size:18px}.project-stage:first-child{padding-top:26px}.project-stage:first-child .project-meta{margin-bottom:16px} }
     @media (prefers-reduced-motion:reduce) { .project-media,.project-media img,.project-copy{transition:none}.project-media{clip-path:none}.project-copy{transform:none;opacity:1} }
     @media (min-width:769px) { .tmenu-mobile { display:none !important; } }
   </style>
@@ -93,8 +102,11 @@
 
   <section class="projects" aria-label="Custom 843 projects">
     <div class="project-stage"><article class="project-card" data-project><div class="project-meta"><span>01</span><span>CUSTOM 843 — LIVE SESSION</span></div><figure class="project-media"><img src="assets/custom/live-indoor.jpg" alt="Выступление на сцене" loading="lazy"><div class="project-copy"><h2 class="project-title">Live<br>Session</h2><p class="project-subtitle">Custom 843</p></div><button class="project-play" type="button" aria-label="Открыть проект"></button></figure></article></div>
+    <article class="event-info"><span class="event-info__number">01</span><p class="event-info__kicker">New event / Custom 843</p><h2 class="event-info__title">Двор:<br>Чалбар<br>× Кастом</h2><p class="event-info__text">Помните, как летом собирались во дворе у друзей? Теннис, музыка из колонок, смех, разговоры до утра. Мы решили вернуть это прекрасное чувство.</p><p class="event-info__details">1 августа<br>Третий месяц лета — открываем вместе.</p></article>
     <div class="project-stage"><article class="project-card" data-project><div class="project-meta"><span>02</span><span>CUSTOM 843 — TATTOO SESSION</span></div><figure class="project-media"><img src="assets/custom/tattoo-session.jpg" alt="Тату-сессия" loading="lazy"><div class="project-copy"><h2 class="project-title">Tattoo<br>Session</h2><p class="project-subtitle">Custom 843</p></div><button class="project-play" type="button" aria-label="Открыть проект"></button></figure></article></div>
+    <article class="event-info event-info--red"><span class="event-info__number">02</span><p class="event-info__kicker">What happens</p><h2 class="event-info__title">Август<br>во дворе</h2><p class="event-info__text">Настольный теннис, бирпонг, уютные огни и наши резиденты за пультом. Специальный гость — большой артист, который сделает эту ночь ещё теплее.</p><p class="event-info__details">Велком-дринк · коктейли · тосты за август</p></article>
     <div class="project-stage"><article class="project-card" data-project><div class="project-meta"><span>03</span><span>CUSTOM 843 — OPEN AIR</span></div><figure class="project-media"><img src="assets/custom/live-outdoor.jpg" alt="Выступление на открытой сцене" loading="lazy"><div class="project-copy"><h2 class="project-title">Open<br>Air</h2><p class="project-subtitle">Custom 843</p></div><button class="project-play" type="button" aria-label="Открыть проект"></button></figure></article></div>
+    <article class="event-info"><span class="event-info__number">03</span><p class="event-info__kicker">Meeting point</p><h2 class="event-info__title">Чалбар</h2><p class="event-info__text">Ждём всех, кто соскучился по прекрасной погоде и встрече с друзьями.</p><p class="event-info__details">Нариманова, 15А<br>19:00—04:00 · 18+ FC/DC<br>Дресс-код — твой лучший аутфит.</p></article>
   </section>
   <script>
     const cover=document.getElementById('video-cover'), video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container'), play=document.getElementById('play-button');
