@@ -6,12 +6,12 @@
   <title>Festival Frankenstein</title>
   <style>
     * { box-sizing:border-box; }
-    html, body { margin:0; min-height:100%; background:#000; }
+    html, body { margin:0; min-height:100%; background:#0c0c0b; }
     body { overflow-x:hidden; font-family:Arial,Helvetica,sans-serif; }
     /* Верхняя навигация без подложки: только логотип и кнопка меню. */
 
     /* SandlerFest hero — copied interaction and geometry */
-    #video-wrapper { position:relative; width:100%; height:100vh; height:100svh; height:100dvh; min-height:100dvh; overflow:hidden; background:#000; }
+    #video-wrapper { position:relative; width:100%; height:100vh; height:100svh; height:100dvh; min-height:100dvh; overflow:hidden; background:#0c0c0b; }
     #bgvid { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; z-index:0; opacity:0; transition:opacity 1s ease; }
     #bgfallback { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; opacity:0; transition:opacity .6s ease; pointer-events:none; }
     body.video-fallback #bgfallback { opacity:1; }
@@ -54,8 +54,8 @@
     .projects { position:relative; overflow:clip; padding:0; background:transparent; color:#050505; }
     .project-stage { --reveal:0; --copy:0; position:relative; height:100svh; background:transparent; }
     .project-card { position:sticky; top:0; width:100%; height:100svh; overflow:hidden; background:transparent; }
-    .project-media { position:absolute; inset:0; width:100vw; height:100svh; margin:0; overflow:hidden; background:#2b1614; clip-path:inset(0 calc((1 - var(--reveal)) * 50%) 0 calc((1 - var(--reveal)) * 50%)); transform:scale(calc(.84 + var(--reveal) * .16)); filter:brightness(calc(.72 + var(--reveal) * .28)) saturate(calc(.78 + var(--reveal) * .22)); will-change:clip-path,transform,filter; }
-    .project-media::after { content:''; position:absolute; z-index:1; inset:0; background:rgba(0,0,0,.38); pointer-events:none; opacity:calc(.4 - var(--reveal) * .25); }
+    .project-media { position:absolute; inset:0; width:100vw; height:100svh; margin:0; overflow:hidden; background:transparent; clip-path:inset(0 calc((1 - var(--reveal)) * 50%) 0 calc((1 - var(--reveal)) * 50%)); transform:scale(calc(.84 + var(--reveal) * .16)); filter:brightness(calc(.72 + var(--reveal) * .28)) saturate(calc(.78 + var(--reveal) * .22)); will-change:clip-path,transform,filter; }
+    .project-media::after { content:none; }
     .project-media img { display:block; width:100%; height:100%; object-fit:cover; transform:scale(calc(1.18 - var(--reveal) * .18)); will-change:transform; }
     /* Афиша — цельный исходник: не режем даты, адрес и нижний знак ради заполнения экрана. */
     .project-media--poster { background:transparent; }
@@ -63,7 +63,7 @@
     .project-copy { position:absolute; z-index:2; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:11% 5% 9%; color:#d60001; text-align:center; pointer-events:none; opacity:var(--copy); transform:translateY(calc((1 - var(--copy)) * 22px)); will-change:opacity,transform; }
     .project-title { margin:0; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(52px,8.6vw,126px); font-weight:400; letter-spacing:-.07em; line-height:.84; text-transform:uppercase; }
     .project-subtitle { margin:0; font-size:clamp(16px,2.1vw,31px); font-weight:400; line-height:1; text-transform:uppercase; }
-    .event-info { min-height:clamp(400px,52vw,680px); margin:0; padding:clamp(28px,4vw,64px) 8vw; display:grid; grid-template-columns:clamp(42px,7vw,94px) 1fr; gap:clamp(18px,3vw,50px); align-content:space-between; border:0; background:radial-gradient(circle at 82% 14%,#35100f 0,transparent 34%),linear-gradient(135deg,#0c0c0b 0%,#15100f 100%); color:#ff4b3d; }
+    .event-info { min-height:100svh; margin:0; padding:clamp(28px,4vw,64px) 8vw; display:grid; grid-template-columns:clamp(42px,7vw,94px) 1fr; gap:clamp(18px,3vw,50px); align-content:space-between; border:0; background:radial-gradient(circle at 82% 14%,#35100f 0,transparent 34%),linear-gradient(135deg,#0c0c0b 0%,#15100f 100%); color:#ff4b3d; }
     .event-info__number { font-size:clamp(18px,2vw,30px); line-height:1; }
     .event-info__kicker { margin:0; color:#f0b6a8; font-size:clamp(15px,1.5vw,23px); letter-spacing:.04em; text-transform:uppercase; }
     .event-info__title { grid-column:2; margin:clamp(18px,4vw,56px) 0 0; color:#ff513f; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(46px,8vw,132px); font-weight:400; letter-spacing:-.065em; line-height:.82; text-transform:uppercase; }
@@ -105,7 +105,7 @@
 
   <div class="curtain left"></div><div class="curtain right"></div>
   <main id="video-wrapper">
-    <video id="bgvid" autoplay muted loop playsinline preload="auto" poster="assets/hero-mobile-fallback.webp">
+    <video id="bgvid" autoplay muted loop playsinline preload="auto" >
       <source media="(max-width: 768px)" src="assets/hero-mobile.mp4" type="video/mp4">
       <source src="assets/hero-desktop.mp4" type="video/mp4">
     </video>
@@ -180,7 +180,7 @@
     window.addEventListener('pageshow',startBackgroundVideo);
     document.addEventListener('visibilitychange',()=>{ if (!document.hidden) startBackgroundVideo(); });
     // Таймер безопасности: если через 2.5 секунды видео не идёт — переключаемся на fallback.
-    setTimeout(()=>{ if(!overlayRevealed) activateFallback(); },2500);
+    setTimeout(()=>{ if(!overlayRevealed) activateFallback(); },1200);
     function startProjectReveals() {
       if (projectRevealsStarted) return;
       projectRevealsStarted=true;
