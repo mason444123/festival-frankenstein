@@ -13,6 +13,9 @@
     /* SandlerFest hero — copied interaction and geometry */
     #video-wrapper { position:relative; width:100%; height:100vh; height:100svh; height:100dvh; min-height:100dvh; overflow:hidden; background:#000; }
     #bgvid { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; z-index:0; opacity:0; transition:opacity 1s ease; }
+    #bgfallback { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; opacity:0; transition:opacity .6s ease; pointer-events:none; }
+    body.video-fallback #bgfallback { opacity:1; }
+    body.video-fallback #bgvid { display:none; }
     #overlay-container { position:absolute; inset:0; background:rgba(0,0,0,.35); z-index:2; opacity:0; transition:opacity 1s ease; pointer-events:none; }
     .hero-lockup { position:relative; width:100%; height:100%; color:#fff; text-align:center; }
     #overlay-logo { position:absolute; left:50%; top:50%; width:80vw; max-width:800px; min-width:180px; display:block; opacity:0; color:#fff; font-family:Arial,Helvetica,sans-serif; font-size:clamp(42px,10vw,154px); font-weight:900; letter-spacing:-.075em; line-height:.82; text-transform:lowercase; transform:translate(-50%,-50%) rotate(9deg) scale(1.16); filter:blur(8px); transition:transform 1.45s cubic-bezier(.16,1,.3,1) .12s,opacity .7s ease .12s,filter 1.1s ease .12s; }
@@ -49,7 +52,7 @@
 
     /* Тот же принцип, что у Il Capo: секция закрепляется, а раскрытие зависит от реального прогресса скролла — не от разового IntersectionObserver. */
     .projects { position:relative; overflow:clip; padding:0; background:#000; color:#050505; }
-    .project-stage { --reveal:0; --copy:0; position:relative; height:165svh; background:#000; }
+    .project-stage { --reveal:0; --copy:0; position:relative; height:100svh; background:#000; }
     .project-card { position:sticky; top:0; width:100%; height:100svh; overflow:hidden; background:#000; }
     .project-media { position:absolute; inset:0; width:100vw; height:100svh; margin:0; overflow:hidden; background:#2b1614; clip-path:inset(0 calc((1 - var(--reveal)) * 50%) 0 calc((1 - var(--reveal)) * 50%)); transform:scale(calc(.84 + var(--reveal) * .16)); filter:brightness(calc(.72 + var(--reveal) * .28)) saturate(calc(.78 + var(--reveal) * .22)); will-change:clip-path,transform,filter; }
     .project-media::after { content:''; position:absolute; z-index:1; inset:0; background:rgba(0,0,0,.38); pointer-events:none; opacity:calc(.4 - var(--reveal) * .25); }
@@ -102,10 +105,11 @@
 
   <div class="curtain left"></div><div class="curtain right"></div>
   <main id="video-wrapper">
-    <video id="bgvid" autoplay muted loop playsinline preload="auto">
+    <video id="bgvid" autoplay muted loop playsinline preload="auto" poster="assets/hero-mobile-fallback.webp">
       <source media="(max-width: 768px)" src="assets/hero-mobile.mp4" type="video/mp4">
       <source src="assets/hero-desktop.mp4" type="video/mp4">
     </video>
+    <img id="bgfallback" alt="" aria-hidden="true">
     <div id="overlay-container">
       <div class="hero-lockup">
         <p class="hero-kicker hero-kicker--top">Казань · 01 августа</p>
@@ -146,26 +150,37 @@
   </footer>
   <script>
     const video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container');
-    const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu'), mobileMenuBar=document.getElementById('mobileMenuBar'), siteBrand=document.getElementById('siteBrand');
-    let projectRevealsStarted=false, overlayRevealed=false;
+    const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu'), mobileMenuBar=document.getElementById('mobileMenuBar'), siteBrand=document.getElementById('siteBrand'), bgfallback=document.getElementById('bgfallback');
+    let projectRevealsStarted=false, overlayRevealed=false, videoFailed=false;
+    const isMobile=window.matchMedia('(max-width:768px)').matches;
+    bgfallback.src = isMobile ? 'assets/hero-mobile-fallback.webp' : 'assets/hero-desktop-fallback.webp';
     function revealVideoOverlay() {
       if (overlayRevealed) return;
       overlayRevealed=true;
       setTimeout(()=>{ overlay.style.opacity='1'; },1500);
     }
-    // In-app mobile browsers often load the video after DOMContentLoaded. Retry on every usable media state,
-    // while keeping it muted so playback never requires a tap.
+    // iOS Low Power Mode блокирует даже muted autoplay. В этом случае молча уходим на анимированный WebP-постер.
+    function activateFallback() {
+      if (videoFailed) return;
+      videoFailed=true;
+      document.body.classList.add('video-fallback');
+      revealVideoOverlay();
+    }
     function startBackgroundVideo() {
+      if (videoFailed) return;
       video.muted=true;
       video.defaultMuted=true;
       video.volume=0;
       const attempt=video.play();
-      if (attempt && typeof attempt.then==='function') attempt.then(revealVideoOverlay).catch(()=>{});
-      else revealVideoOverlay();
+      if (attempt && typeof attempt.then==='function') {
+        attempt.then(()=>{ if(!videoFailed){ video.style.opacity='1'; revealVideoOverlay(); } }).catch(activateFallback);
+      } else revealVideoOverlay();
     }
     ['loadedmetadata','loadeddata','canplay','canplaythrough'].forEach(eventName=>video.addEventListener(eventName,startBackgroundVideo));
     window.addEventListener('pageshow',startBackgroundVideo);
     document.addEventListener('visibilitychange',()=>{ if (!document.hidden) startBackgroundVideo(); });
+    // Таймер безопасности: если через 2.5 секунды видео не идёт — переключаемся на fallback.
+    setTimeout(()=>{ if(!overlayRevealed) activateFallback(); },2500);
     function startProjectReveals() {
       if (projectRevealsStarted) return;
       projectRevealsStarted=true;
@@ -177,12 +192,10 @@
         let keepAnimating=false;
         states.forEach(state=>{
           const rect=state.stage.getBoundingClientRect();
-          const travel=Math.max(1,state.stage.offsetHeight-window.innerHeight);
-          // Стартуем, когда следующий экран уже входит в нижнюю треть viewport,
-          // и завершаем раскрытие к середине его scroll-отрезка.
-          const start=window.innerHeight*.65;
-          const finish=travel*.5;
-          const raw=Math.max(0,Math.min(1,(start-rect.top)/(start+finish)));
+          const travel=state.stage.offsetHeight-window.innerHeight;
+          // Карточки теперь занимают ровно один экран: без пустого хвоста между картинкой и текстом.
+          // В этом режиме раскрываем карточку целиком сразу при её входе в viewport.
+          const raw=travel<=1 ? (rect.top<window.innerHeight*.65 ? 1 : 0) : Math.max(0,Math.min(1,((window.innerHeight*.65)-rect.top)/(window.innerHeight*.65+travel*.5)));
           state.target=raw;
           // Плавность Lenis/Framer Motion: даже при резком wheel-событии маска не прыгает кадром.
           state.current+= (state.target-state.current)*.14;
