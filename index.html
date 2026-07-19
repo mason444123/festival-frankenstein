@@ -47,18 +47,19 @@
     .site-menu { position:fixed; z-index:10000; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:auto; visibility:hidden; pointer-events:none; clip-path:inset(0 0 100% 0); background:#0a0909; color:#fff; padding:80px 9vw 8vw; transition:clip-path .8s cubic-bezier(.83,0,.17,1),visibility 0s linear .8s; }
     .site-menu::before,.site-menu::after { content:''; position:absolute; z-index:0; top:0; bottom:0; width:51%; opacity:1; background:#050505; will-change:transform,opacity; transition:transform .8s cubic-bezier(.83,0,.17,1),opacity .01s linear .79s; }.site-menu::before { left:0; transform:translateX(-102%); }.site-menu::after { right:0; transform:translateX(102%); transition-delay:0s,.06s; }
     .site-menu.is-open { visibility:visible; pointer-events:auto; clip-path:inset(0); transition:clip-path .8s cubic-bezier(.83,0,.17,1),visibility 0s; }.site-menu.is-open::before,.site-menu.is-open::after { opacity:0; transform:translateX(0); transition:transform .8s cubic-bezier(.83,0,.17,1),opacity .18s ease .62s; }
-    /* Меню — крупная, живая типографика в ритме самого сайта. */
-    .site-menu { text-align:center; }
-    .site-menu > a { position:relative; z-index:1; display:inline-block; color:#fff; text-decoration:none; font-family:'Helvetica Neue',Arial,sans-serif; font-size:clamp(28px,3.15vw,46px); font-weight:700; line-height:1.3; letter-spacing:-.045em; margin:0; opacity:0; transform:translateY(40px); transition:color .2s ease,opacity .4s ease,transform .65s cubic-bezier(.22,1,.36,1); transition-delay:0s; }
-    .site-menu.is-open > a { opacity:1; transform:translateY(0); transition-delay:calc(.22s + var(--i) * .075s); }
-    .site-menu > a::after { content:''; position:absolute; right:0; bottom:0; left:0; height:2px; background:#ff4b3d; transform:scaleX(0); transform-origin:right; transition:transform .25s ease; }
-    .site-menu > a:hover,.site-menu > a:focus-visible { color:#ff4b3d; outline:none; }.site-menu > a:hover::after,.site-menu > a:focus-visible::after { transform:scaleX(1); transform-origin:left; }
-    .site-menu .nav-menu-buy { display:flex; align-items:center; justify-content:center; gap:11px; min-width:min(78vw,330px); margin-top:28px; padding:13px 26px 15px; border:1px solid #ff4b3d; border-radius:999px; background:#e30b08; box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 12px 30px rgba(227,11,8,.24); color:#1a0807; font-size:clamp(25px,3vw,39px); font-weight:800; letter-spacing:-.055em; line-height:1; }
-    .site-menu .nav-menu-buy::after { content:'↗'; position:static; display:block; width:auto; height:auto; background:none; transform:none; font-size:.84em; line-height:1; }.site-menu .nav-menu-buy:hover,.site-menu .nav-menu-buy:focus-visible { color:#fff5ef; background:#ff4b3d; transform:translateY(-3px); }.site-menu .nav-menu-buy:hover::after,.site-menu .nav-menu-buy:focus-visible::after { transform:none; }
-    .menu-socials { position:relative; z-index:1; display:flex; gap:16px; justify-content:center; margin-top:32px; opacity:0; transform:translateY(30px); transition:opacity .4s ease .5s,transform .5s ease .5s; }
+    /* Полноэкранное editorial-меню: крупная серийная типографика вместо обычного списка ссылок. */
+    .site-menu { text-align:center; background:radial-gradient(circle at 50% 45%,#24100f 0,transparent 36%),#0a0909; }
+    .site-menu > .nav-link { position:relative; z-index:1; display:flex; align-items:baseline; justify-content:center; gap:13px; color:#f6eee8; text-decoration:none; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(38px,5.2vw,78px); font-weight:400; line-height:.9; letter-spacing:-.07em; margin:0 0 8px; opacity:0; transform:translateY(34px); transition:color .22s ease,opacity .4s ease,transform .65s cubic-bezier(.22,1,.36,1); transition-delay:0s; }
+    .site-menu.is-open > .nav-link { opacity:1; transform:translateY(0); transition-delay:calc(.18s + var(--i) * .065s); }
+    .site-menu > .nav-link::after { content:''; position:absolute; right:-8px; bottom:-7px; left:calc(1.1em + 13px); height:2px; background:#e30b08; transform:scaleX(0); transform-origin:right; transition:transform .26s ease; }
+    .site-menu > .nav-link:hover,.site-menu > .nav-link:focus-visible { color:#ff4b3d; outline:none; }.site-menu > .nav-link:hover::after,.site-menu > .nav-link:focus-visible::after { transform:scaleX(1); transform-origin:left; }
+    .nav-index { color:#e30b08; font-family:Arial,sans-serif; font-size:10px; font-weight:800; letter-spacing:.06em; line-height:1; }
+    .site-menu .nav-menu-buy { display:inline-flex; align-items:center; justify-content:center; min-width:min(72vw,286px); margin-top:24px; padding:14px 25px 13px; border:1px solid #ff4b3d; border-radius:0; background:#e30b08; box-shadow:7px 7px 0 #5b0909; color:#160707; font-family:Arial,sans-serif; font-size:clamp(17px,4.5vw,23px); font-weight:900; letter-spacing:-.035em; line-height:1; text-decoration:none; text-transform:uppercase; opacity:0; transform:translateY(34px); transition:background .2s ease,color .2s ease,box-shadow .2s ease,opacity .4s ease,transform .65s cubic-bezier(.22,1,.36,1); transition-delay:0s; }
+    .site-menu.is-open .nav-menu-buy { opacity:1; transform:translateY(0); transition-delay:calc(.18s + var(--i) * .065s); }.site-menu .nav-menu-buy:hover,.site-menu .nav-menu-buy:focus-visible { background:#ff4b3d; color:#fff8f4; box-shadow:3px 3px 0 #5b0909; outline:none; }
+    .menu-socials { position:relative; z-index:1; display:flex; gap:19px; justify-content:center; margin-top:35px; opacity:0; transform:translateY(24px); transition:opacity .4s ease .55s,transform .5s ease .55s; }
     .site-menu.is-open .menu-socials { opacity:1; transform:translateY(0); }
-    .site-menu .menu-social { width:50px; height:50px; padding:0; border:0; border-radius:0; background:transparent; color:#fff; display:flex; align-items:center; justify-content:center; text-decoration:none; transform:none; transition:color .2s ease,transform .2s ease; }
-    .site-menu .menu-social::after { content:none; }.site-menu .menu-social:hover,.site-menu .menu-social:focus-visible { background:transparent; border:0; color:#ff4b3d; transform:translateY(-4px) rotate(-4deg); outline:none; }.site-menu .menu-social svg { display:block; width:30px; height:30px; }
+    .site-menu .menu-social { display:block; padding:0 0 4px; border:0; background:transparent; color:#a79a93; font-family:Arial,sans-serif; font-size:11px; font-weight:800; letter-spacing:.08em; line-height:1; text-decoration:none; text-transform:uppercase; transition:color .2s ease,transform .2s ease; }
+    .site-menu .menu-social::after { content:none; }.site-menu .menu-social:hover,.site-menu .menu-social:focus-visible { color:#ff4b3d; background:transparent; transform:translateY(-3px); outline:none; }.site-menu .menu-social svg { display:none; }
 
     /* Тот же принцип, что у Il Capo: секция закрепляется, а раскрытие зависит от реального прогресса скролла — не от разового IntersectionObserver. */
     .projects { position:relative; overflow:clip; padding:0; background:transparent; color:#050505; }
@@ -96,10 +97,9 @@
     .faq-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 clamp(28px,6vw,110px); }.faq-item { border-top:1px solid rgba(255,105,89,.32); }.faq-item:last-child { border-bottom:1px solid rgba(255,105,89,.32); }.faq-item summary { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:22px 0; cursor:pointer; color:#fff4ee; font-size:clamp(17px,1.65vw,25px); line-height:1.12; list-style:none; }.faq-item summary::-webkit-details-marker { display:none; }.faq-item summary::after { content:'+'; flex:0 0 auto; color:#ff4b3d; font-size:32px; font-weight:300; line-height:.7; transition:transform .25s ease; }.faq-item[open] summary::after { transform:rotate(45deg); }.faq-item p { max-width:620px; margin:0; padding:0 0 22px; color:#f0b6a8; font-size:15px; line-height:1.5; }.faq-item a { color:#fff4ee; }
     .legal-grid { display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:clamp(28px,5vw,72px); padding:clamp(36px,6vw,76px) 0; border-bottom:1px solid rgba(255,92,77,.22); }
     .legal-title { margin:0 0 12px; color:#ff6959; font-size:12px; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }.legal-text,.legal-links { margin:0; color:#f0b6a8; font-size:14px; line-height:1.52; }.legal-links { display:grid; gap:8px; }.legal-grid a { color:#fff4ee; text-decoration:none; border-bottom:1px solid rgba(255,105,89,.52); width:max-content; max-width:100%; }.legal-grid a:hover { color:#ff6959; }
-    .footer-socials { display:flex; gap:16px; justify-content:center; margin:0 0 40px; }
-    .footer-social { width:48px; height:48px; border-radius:50%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; transition:all .25s; }
-    .footer-social:hover { background:#bf1212; border-color:#bf1212; transform:translateY(-3px); box-shadow:0 8px 24px rgba(191,18,18,.4); }
-    .footer-social svg { width:20px; height:20px; }
+    .footer-socials { display:flex; flex-wrap:wrap; gap:18px; justify-content:center; margin:clamp(30px,5vw,54px) 0 28px; }
+    .footer-social { display:block; padding-bottom:5px; color:#f4ebe5; font-size:12px; font-weight:800; letter-spacing:.08em; line-height:1; text-decoration:none; text-transform:uppercase; border-bottom:1px solid rgba(255,105,89,.52); transition:color .2s,border-color .2s,transform .2s; }
+    .footer-social:hover,.footer-social:focus-visible { color:#ff4b3d; border-color:#ff4b3d; transform:translateY(-3px); outline:none; }.footer-social svg { display:none; }
     .developer-badge { display:inline-block; margin-top:clamp(20px,3vw,34px); padding:0; color:rgba(255,105,89,.72); font-size:10px; font-weight:700; letter-spacing:.04em; line-height:1.2; text-decoration:underline; text-decoration-color:rgba(255,105,89,.36); text-underline-offset:3px; text-transform:none; }
     @media (max-width:768px) { .site-brand{top:4px;left:18px;width:56px;height:56px}.tmenu-mobile{top:0;right:0}.site-menu{padding:92px 9vw 8vw}.site-footer{padding:50px 8vw 28px}.faq-grid,.legal-grid{grid-template-columns:1fr;gap:0}.site-faq__title{font-size:clamp(58px,18vw,84px)}.legal-grid{padding:38px 0}.developer-badge{font-size:9px} }
     @media (max-width:768px) { .project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.event-info{min-height:100svh;margin-top:0;padding:34px 8vw 38px;grid-template-columns:42px 1fr;gap:16px}.event-info__title{font-size:clamp(52px,15vw,80px)}.event-info__text{font-size:clamp(18px,4.2vw,22px);line-height:1.35}.event-info__details{font-size:clamp(16px,3.8vw,20px)} }
@@ -116,19 +116,19 @@
     </div>
   </div>
   <nav class="site-menu" id="siteMenu" aria-hidden="true">
-    <a style="--i:0" href="https://mason444123.github.io/sait-design-lab/">Главная</a>
-    <a style="--i:1" href="https://mason444123.github.io/sait-design-lab/#about">О событии</a>
-    <a style="--i:2" href="https://mason444123.github.io/sait-design-lab/#mini-preso">Команда</a>
-    <a style="--i:3" href="https://mason444123.github.io/sait-design-lab/#lineup">Программа</a>
-    <a style="--i:4" href="https://mason444123.github.io/sait-design-lab/shop.html">Магазин</a>
-    <a style="--i:5" href="https://mason444123.github.io/sait-design-lab/past-events.html">Прошлые события</a>
-    <a style="--i:6" href="https://mason444123.github.io/sait-design-lab/#faq">FAQ</a>
+    <a class="nav-link" style="--i:0" href="https://mason444123.github.io/sait-design-lab/"><span class="nav-index">01</span><span>Главная</span></a>
+    <a class="nav-link" style="--i:1" href="https://mason444123.github.io/sait-design-lab/#about"><span class="nav-index">02</span><span>О событии</span></a>
+    <a class="nav-link" style="--i:2" href="https://mason444123.github.io/sait-design-lab/#mini-preso"><span class="nav-index">03</span><span>Команда</span></a>
+    <a class="nav-link" style="--i:3" href="https://mason444123.github.io/sait-design-lab/#lineup"><span class="nav-index">04</span><span>Программа</span></a>
+    <a class="nav-link" style="--i:4" href="https://mason444123.github.io/sait-design-lab/shop.html"><span class="nav-index">05</span><span>Магазин</span></a>
+    <a class="nav-link" style="--i:5" href="https://mason444123.github.io/sait-design-lab/past-events.html"><span class="nav-index">06</span><span>Прошлые события</span></a>
+    <a class="nav-link" style="--i:6" href="https://mason444123.github.io/sait-design-lab/#faq"><span class="nav-index">07</span><span>FAQ</span></a>
     <a style="--i:7" href="https://voroh.ru/widget/event/1036665/019ef4a4-09d5-8687-8cf4-a35183b37649/" target="_blank" rel="noopener" class="nav-menu-buy">Купить билет</a>
-        <div class="menu-socials">
-      <a href="https://t.me/custom_843" target="_blank" rel="noopener" class="menu-social" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.04 15.34l-.37 5.2c.52 0 .75-.22 1.02-.49l2.45-2.34 5.08 3.72c.93.52 1.59.25 1.84-.86l3.34-15.64c.33-1.39-.5-1.93-1.41-1.6L1.5 9.87c-1.36.53-1.34 1.28-.24 1.62l4.88 1.52L17.5 5.93c.54-.33 1.03-.15.62.18L9.04 15.34z"/></svg></a>
-      <a href="https://www.instagram.com/custom.843?igsh=MW56eTl0b2FhZ203OQ==" target="_blank" rel="noopener" class="menu-social" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg></a>
-      <a href="https://vk.ru/custom843.kazan" target="_blank" rel="noopener" class="menu-social" aria-label="VK"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.48 18.75c-5.55 0-9.36-4.05-9.52-10.76h2.96c.11 4.91 2.35 6.96 4.06 7.38V8h2.86v4.26c1.63-.18 3.36-2.11 3.94-4.26h2.82c-.44 2.66-2.29 4.59-3.6 5.39 1.31.65 3.4 2.34 4.21 5.36h-3.12c-.63-1.98-2.23-3.52-4.25-3.73v3.73h-.36z"/></svg></a>
-      <a href="https://www.tiktok.com/@custom_843?_r=1&_t=ZS-96UOwNMbkpg" target="_blank" rel="noopener" class="menu-social" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-1.13-.73-1.88-2-1.88-3.45h-3.1v12.05a2.56 2.56 0 1 1-2.56-2.56c.25 0 .49.04.72.11V8.82a5.67 5.67 0 1 0 4.94 5.6V8.25a7.05 7.05 0 0 0 4.12 1.32V6.48c-.82 0-1.58-.24-2.24-.66z"/></svg></a>
+    <div class="menu-socials" aria-label="Социальные сети">
+      <a href="https://t.me/custom_843" target="_blank" rel="noopener" class="menu-social" aria-label="Telegram">Telegram</a>
+      <a href="https://www.instagram.com/custom.843?igsh=MW56eTl0b2FhZ203OQ==" target="_blank" rel="noopener" class="menu-social" aria-label="Instagram">Instagram</a>
+      <a href="https://vk.ru/custom843.kazan" target="_blank" rel="noopener" class="menu-social" aria-label="VK">VK</a>
+      <a href="https://www.tiktok.com/@custom_843?_r=1&_t=ZS-96UOwNMbkpg" target="_blank" rel="noopener" class="menu-social" aria-label="TikTok">TikTok</a>
     </div>
   </nav>
 
@@ -176,10 +176,10 @@
       <div><p class="legal-title">Вход и данные</p><p class="legal-text">Мероприятие 18+. На входе может проверяться возраст по оригиналу документа без копирования паспортных данных. Организатор не обрабатывает полные данные банковских карт.</p></div>
     </div>
     <div class="footer-socials" aria-label="Мы в социальных сетях">
-      <a href="https://t.me/custom_843" target="_blank" rel="noopener" class="footer-social" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.04 15.34l-.37 5.2c.52 0 .75-.22 1.02-.49l2.45-2.34 5.08 3.72c.93.52 1.59.25 1.84-.86l3.34-15.64c.33-1.39-.5-1.93-1.41-1.6L1.5 9.87c-1.36.53-1.34 1.28-.24 1.62l4.88 1.52L17.5 5.93c.54-.33 1.03-.15.62.18L9.04 15.34z"/></svg></a>
-      <a href="https://www.instagram.com/custom.843?igsh=MW56eTl0b2FhZ203OQ==" target="_blank" rel="noopener" class="footer-social" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg></a>
-      <a href="https://vk.ru/custom843.kazan" target="_blank" rel="noopener" class="footer-social" aria-label="VK"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.48 18.75c-5.55 0-9.36-4.05-9.52-10.76h2.96c.11 4.91 2.35 6.96 4.06 7.38V8h2.86v4.26c1.63-.18 3.36-2.11 3.94-4.26h2.82c-.44 2.66-2.29 4.59-3.6 5.39 1.31.65 3.4 2.34 4.21 5.36h-3.12c-.63-1.98-2.23-3.52-4.25-3.73v3.73h-.36z"/></svg></a>
-      <a href="https://www.tiktok.com/@custom_843?_r=1&_t=ZS-96UOwNMbkpg" target="_blank" rel="noopener" class="footer-social" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-1.13-.73-1.88-2-1.88-3.45h-3.1v12.05a2.56 2.56 0 1 1-2.56-2.56c.25 0 .49.04.72.11V8.82a5.67 5.67 0 1 0 4.94 5.6V8.25a7.05 7.05 0 0 0 4.12 1.32V6.48c-.82 0-1.58-.24-2.24-.66z"/></svg></a>
+      <a href="https://t.me/custom_843" target="_blank" rel="noopener" class="footer-social" aria-label="Telegram">Telegram</a>
+      <a href="https://www.instagram.com/custom.843?igsh=MW56eTl0b2FhZ203OQ==" target="_blank" rel="noopener" class="footer-social" aria-label="Instagram">Instagram</a>
+      <a href="https://vk.ru/custom843.kazan" target="_blank" rel="noopener" class="footer-social" aria-label="VK">VK</a>
+      <a href="https://www.tiktok.com/@custom_843?_r=1&_t=ZS-96UOwNMbkpg" target="_blank" rel="noopener" class="footer-social" aria-label="TikTok">TikTok</a>
     </div>
     <a class="developer-badge" href="https://t.me/bugaev_space" target="_blank" rel="noopener">Разработчик сайта</a>
   </footer>
