@@ -80,7 +80,7 @@
 
     /* Тот же принцип, что у Il Capo: секция закрепляется, а раскрытие зависит от реального прогресса скролла — не от разового IntersectionObserver. */
     .projects { position:relative; overflow:clip; padding:0; background:transparent; color:#050505; }
-    .project-stage { --reveal:0; --copy:0; position:relative; height:100svh; background:transparent; }
+    .project-stage { --reveal:0; --copy:0; position:relative; height:300svh; background:transparent; }
     .project-card { position:sticky; top:0; width:100%; height:100svh; overflow:hidden; background:transparent; }
     .project-media { position:absolute; inset:0; width:100vw; height:100svh; margin:0; overflow:hidden; background:transparent; clip-path:inset(0 calc((1 - var(--reveal)) * 50%) 0 calc((1 - var(--reveal)) * 50%)); transform:scale(calc(.84 + var(--reveal) * .16)); filter:brightness(.88) saturate(.92); will-change:transform,clip-path; }
     .project-media::after { content:none; }
@@ -127,20 +127,20 @@
   </style>
 </head>
 <body>
-  <a class="site-brand" id="siteBrand" href="https://mason444123.github.io/sait-design-lab/" aria-label="Custom 843 — главная"><img src="assets/custom-logo.png" alt="Custom 843"></a>
+  <a class="site-brand" id="siteBrand" href="./" aria-label="Custom 843 — главная"><img src="assets/custom-logo.png" alt="Custom 843"></a>
   <div class="tmenu-mobile" id="mobileMenuBar">
     <div class="tmenu-mobile__container">
       <button class="t-menuburger t-menuburger_second" id="menuTrigger" type="button" aria-label="Навигационное меню" aria-expanded="false"><span></span><span></span><span></span><span></span></button>
     </div>
   </div>
   <nav class="site-menu" id="siteMenu" aria-hidden="true">
-    <a class="nav-link" style="--i:0" href="https://mason444123.github.io/sait-design-lab/"><span class="nav-index">01</span><span>Главная</span></a>
-    <a class="nav-link" style="--i:1" href="https://mason444123.github.io/sait-design-lab/#about"><span class="nav-index">02</span><span>О событии</span></a>
-    <a class="nav-link" style="--i:2" href="https://mason444123.github.io/sait-design-lab/#mini-preso"><span class="nav-index">03</span><span>Команда</span></a>
-    <a class="nav-link" style="--i:3" href="https://mason444123.github.io/sait-design-lab/#lineup"><span class="nav-index">04</span><span>Программа</span></a>
-    <a class="nav-link" style="--i:4" href="https://mason444123.github.io/sait-design-lab/shop.html"><span class="nav-index">05</span><span>Магазин</span></a>
-    <a class="nav-link" style="--i:5" href="https://mason444123.github.io/sait-design-lab/past-events.html"><span class="nav-index">06</span><span>Прошлые события</span></a>
-    <a class="nav-link" style="--i:6" href="https://mason444123.github.io/sait-design-lab/#faq"><span class="nav-index">07</span><span>FAQ</span></a>
+    <a class="nav-link" style="--i:0" href="./"><span class="nav-index">01</span><span>Главная</span></a>
+    <a class="nav-link" style="--i:1" href="#about"><span class="nav-index">02</span><span>О событии</span></a>
+    <a class="nav-link" style="--i:2" href="#team"><span class="nav-index">03</span><span>Команда</span></a>
+    <a class="nav-link" style="--i:3" href="#program"><span class="nav-index">04</span><span>Программа</span></a>
+    <a class="nav-link" style="--i:4" href="shop.html"><span class="nav-index">05</span><span>Магазин</span></a>
+    <a class="nav-link" style="--i:5" href="past-events.html"><span class="nav-index">06</span><span>Прошлые события</span></a>
+    <a class="nav-link" style="--i:6" href="#faq"><span class="nav-index">07</span><span>FAQ</span></a>
     <button style="--i:7" type="button" class="nav-menu-buy" id="ticketOpen" data-ticket-open>Купить билет</button>
     <div class="menu-socials" aria-label="Социальные сети">
       <a href="https://t.me/custom_843" target="_blank" rel="noopener" class="menu-social" aria-label="Telegram">Telegram</a>
@@ -176,16 +176,16 @@
   <button class="ticket-float" type="button" data-ticket-open aria-label="Открыть покупку билета"><span class="ticket-float__eyebrow">01.08 · Чалбар</span><span class="ticket-float__label">Купить билет</span></button>
 
   <section class="projects" aria-label="Custom 843 projects">
-    <article class="event-info event-info--red"><span class="event-info__number">01</span><p class="event-info__kicker">Казань / c 2022</p><h2 class="event-info__title">Кастом<br>843</h2><div class="event-info__body"><p class="event-info__text">Custom 843 — команда из Казани, которая собирает вечера вокруг хип-хопа, R&amp;B и танца. Не просто ставит музыку, а придумывает, как человек проживёт ночь: кого встретит у входа, на каком треке выйдет на танцпол и с каким настроением уедет домой.</p><p class="event-info__text">Для нас площадка — часть лайнапа. Свет, звук, бар, люди, визуал и темп вечера работают вместе: можно прийти за любимыми треками, случайно познакомиться с кем-то у стойки и остаться до последнего сета.</p><p class="event-info__text">Мы не делаем «для галочки» и не пытаемся понравиться всем. Собираем своих — тех, кому важны отборная музыка, свобода в одежде и ощущение, что город на одну ночь стал чуть живее.</p></div><p class="event-info__details">За пультом — резиденты Custom: MNCB · Sasha Spi · Maliká · Priveetromashki · Crimewavė · Ugarinat · Avir</p></article>
+    <article class="event-info event-info--red" id="team"><span class="event-info__number">01</span><p class="event-info__kicker">Казань / c 2022</p><h2 class="event-info__title">Кастом<br>843</h2><div class="event-info__body"><p class="event-info__text">Custom 843 — команда из Казани, которая собирает вечера вокруг хип-хопа, R&amp;B и танца. Не просто ставит музыку, а придумывает, как человек проживёт ночь: кого встретит у входа, на каком треке выйдет на танцпол и с каким настроением уедет домой.</p><p class="event-info__text">Для нас площадка — часть лайнапа. Свет, звук, бар, люди, визуал и темп вечера работают вместе: можно прийти за любимыми треками, случайно познакомиться с кем-то у стойки и остаться до последнего сета.</p><p class="event-info__text">Мы не делаем «для галочки» и не пытаемся понравиться всем. Собираем своих — тех, кому важны отборная музыка, свобода в одежде и ощущение, что город на одну ночь стал чуть живее.</p></div><p class="event-info__details">За пультом — резиденты Custom: MNCB · Sasha Spi · Maliká · Priveetromashki · Crimewavė · Ugarinat · Avir</p></article>
     <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/custom/live-indoor.jpg" alt="Выступление на сцене" loading="lazy"><div class="project-copy"><h2 class="project-title">Live<br>Session</h2><p class="project-subtitle">Custom 843</p></div></figure></article></div>
-    <article class="event-info event-info--event"><span class="event-info__number">02</span><p class="event-info__kicker">01 августа / Чалбар</p><h2 class="event-info__title">Двор:<br>Чалбар<br>× Кастом</h2><div class="event-info__body"><p class="event-info__text">1 августа забираем двор «Чалбар» под свой ритм. Начинаем в 19:00, пока город ещё не выключил свет, и остаёмся до 04:00 — с музыкой, разговорами, танцами и длинной летней ночью.</p><p class="event-info__text">Во дворе будут теннис, бирпонг и коктейли — чтобы не выбирать между «просто посидеть» и «идти танцевать». Можно прийти компанией, собрать новую или потеряться в лайнапе и вернуться к своим уже под утро.</p><p class="event-info__text">За музыку отвечают резиденты Custom и специальный гость. Это не концерт с паузами между пунктами программы, а один живой вечер: у него есть старт, разгон и момент, когда никто уже не смотрит на время.</p></div><div class="event-info__stats"><div class="stat"><span class="stat-num">01.08</span><span class="stat-label">Пятница</span></div><div class="stat"><span class="stat-num">19:00</span><span class="stat-label">Начинаем</span></div><div class="stat"><span class="stat-num">04:00</span><span class="stat-label">Финишируем</span></div><div class="stat"><span class="stat-num">Чалбар</span><span class="stat-label">Нариманова, 15А</span></div></div><div class="event-info__closing"><p class="event-info__details">18+ · FC/DC · Дресс-код — твой лучший аутфит.</p><button type="button" class="event-ticket-cta" data-ticket-open><span>Купить билет</span></button></div></article>
+    <article class="event-info event-info--event" id="about"><span class="event-info__number">02</span><p class="event-info__kicker">01 августа / Чалбар</p><h2 class="event-info__title">Двор:<br>Чалбар<br>× Кастом</h2><div class="event-info__body"><p class="event-info__text">1 августа забираем двор «Чалбар» под свой ритм. Начинаем в 19:00, пока город ещё не выключил свет, и остаёмся до 04:00 — с музыкой, разговорами, танцами и длинной летней ночью.</p><p class="event-info__text">Во дворе будут теннис, бирпонг и коктейли — чтобы не выбирать между «просто посидеть» и «идти танцевать». Можно прийти компанией, собрать новую или потеряться в лайнапе и вернуться к своим уже под утро.</p><p class="event-info__text">За музыку отвечают резиденты Custom и специальный гость. Это не концерт с паузами между пунктами программы, а один живой вечер: у него есть старт, разгон и момент, когда никто уже не смотрит на время.</p></div><div class="event-info__stats" id="program"><div class="stat"><span class="stat-num">01.08</span><span class="stat-label">Пятница</span></div><div class="stat"><span class="stat-num">19:00</span><span class="stat-label">Начинаем</span></div><div class="stat"><span class="stat-num">04:00</span><span class="stat-label">Финишируем</span></div><div class="stat"><span class="stat-num">Чалбар</span><span class="stat-label">Нариманова, 15А</span></div></div><div class="event-info__closing"><p class="event-info__details">18+ · FC/DC · Дресс-код — твой лучший аутфит.</p><button type="button" class="event-ticket-cta" data-ticket-open><span>Купить билет</span></button></div></article>
     <div class="project-stage"><article class="project-card" data-project><figure class="project-media project-media--poster"><img src="assets/custom/chalbar-poster.jpg" alt="Афиша события Чалбар × Кастом" loading="lazy"></figure></article></div>
     <article class="event-info"><span class="event-info__number">03</span><p class="event-info__kicker">Meeting point</p><h2 class="event-info__title">Чалбар</h2><p class="event-info__text">Собирай лучший аутфит, отмечай своих и залетай. После таких ночей август только начинается.</p><p class="event-info__details">Нариманова, 15А<br>19:00—04:00 · 18+ FC/DC<br>Дресс-код — твой лучший аутфит.</p></article>
     <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/custom/live-outdoor.jpg" alt="Выступление на открытой сцене" loading="lazy"><div class="project-copy"><h2 class="project-title">Open<br>Air</h2><p class="project-subtitle">Custom 843</p></div></figure></article></div>
   </section>
 
   <footer class="site-footer">
-    <section class="site-faq" aria-labelledby="faq-title">
+    <section class="site-faq" id="faq" aria-labelledby="faq-title">
       <p class="site-faq__eyebrow">FAQ</p>
       <h2 class="site-faq__title" id="faq-title">Вопросы<br>и ответы</h2>
       <div class="faq-grid">
@@ -250,33 +250,40 @@
     function startProjectReveals() {
       if (projectRevealsStarted) return;
       projectRevealsStarted=true;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const states=[...document.querySelectorAll('[data-project]')].map(card=>({card,stage:card.closest('.project-stage'),current:0,target:0}));
-      let lastScrollY=-1, running=false;
-      function tick() {
+      if (prefersReducedMotion) {
+        states.forEach(state => {
+          state.card.style.setProperty('--reveal', '1');
+          state.card.style.setProperty('--copy', '1');
+        });
+        return;
+      }
+      let lastT = performance.now(), running = false;
+      function tick(now) {
+        const dt = Math.min(64, now - lastT) / 1000;
+        lastT = now;
+        const ease = 1 - Math.pow(0.0009, dt);
         states.forEach(state => {
           const rect = state.stage.getBoundingClientRect();
           const travel = state.stage.offsetHeight - window.innerHeight;
           const vh = window.innerHeight;
-          // Раскрытие: начинается когда секция входит в нижнюю треть viewport,
-          // завершается к середине scroll-отрезка. При скролле вверх — корректно возвращается к 0.
           const raw = travel <= 1
             ? (rect.top < vh * 0.65 ? 1 : 0)
             : Math.max(0, Math.min(1, (vh * 0.65 - rect.top) / (vh * 0.65 + travel * 0.5)));
           state.target = raw;
-          // Плавная интерполяция — работает в обе стороны, даже после остановки скролла.
-          state.current += (state.target - state.current) * 0.11;
-          if (Math.abs(state.target - state.current) < 0.0015) state.current = state.target;
+          state.current += (state.target - state.current) * ease;
+          if (Math.abs(state.target - state.current) < 0.0012) state.current = state.target;
           const copy = Math.max(0, Math.min(1, (state.current - 0.34) / 0.5));
           state.card.style.setProperty('--reveal', state.current.toFixed(4));
           state.card.style.setProperty('--copy', copy.toFixed(4));
         });
-        // Проверяем: если любая карточка ещё не достигла target — продолжаем. Иначе останавливаемся до следующего scroll.
         const allSettled = states.every(s => Math.abs(s.target - s.current) < 0.002);
         if (allSettled) { running = false; return; }
         requestAnimationFrame(tick);
       }
       function kick() {
-        if (!running) { running = true; requestAnimationFrame(tick); }
+        if (!running) { running = true; lastT = performance.now(); requestAnimationFrame(tick); }
       }
       window.addEventListener('scroll', kick, { passive: true });
       window.addEventListener('resize', kick);
