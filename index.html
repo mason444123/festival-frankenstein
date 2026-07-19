@@ -39,23 +39,24 @@
     .site-menu.is-open { display:block; }.site-menu a { display:block; width:max-content; color:#fff; text-decoration:none; font-size:clamp(28px,5vw,74px); line-height:1; margin:.17em 0; }
     .site-menu .nav-menu-buy { margin-top:28px; color:#bf1212; }
 
-    /* Project blocks: full-screen reveal and overlap while scrolling. */
-    .projects { position:relative; background:#080808; color:#fff; }
-    .projects-intro { min-height:42vh; padding:clamp(56px,10vw,150px) 7vw 8vh; display:flex; align-items:flex-end; border-bottom:1px solid rgba(255,255,255,.25); }
-    .projects-intro p { max-width:620px; margin:0; font-size:clamp(12px,1.2vw,16px); line-height:1.15; letter-spacing:.05em; text-transform:uppercase; }
-    .project-stage { position:relative; height:100svh; min-height:620px; }
-    .project-card { position:sticky; top:0; width:100%; height:100svh; min-height:620px; overflow:hidden; background:#000; }
-    .project-media { position:absolute; inset:0; margin:0; clip-path:inset(100% 0 0 0); transition:clip-path 1.15s cubic-bezier(.77,0,.18,1); }
-    .project-card.is-visible .project-media { clip-path:inset(0 0 0 0); }
-    .project-media::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.04) 28%,rgba(0,0,0,.72) 100%); }
-    .project-media img { display:block; width:100%; height:100%; object-fit:cover; transform:scale(1.14); transition:transform 1.7s cubic-bezier(.2,.75,.25,1); }
+    /* Il Capo project sequence: red scroll canvas, portrait media card and typography layered over it. */
+    .projects { position:relative; overflow:hidden; padding:0 0 clamp(80px,12vw,180px); background:#d60001; color:#050505; }
+    .project-stage { position:relative; padding:clamp(100px,13vw,180px) 5vw 0; }
+    .project-card { position:relative; width:100%; overflow:visible; background:transparent; }
+    .project-meta { width:min(84vw,1180px); margin:0 auto clamp(38px,5vw,76px); display:grid; grid-template-columns:clamp(38px,5vw,70px) 1fr; gap:clamp(16px,2.5vw,42px); font-size:clamp(17px,2.2vw,33px); font-weight:400; line-height:1; text-transform:uppercase; }
+    .project-media { position:relative; width:min(84vw,980px); aspect-ratio:.72; margin:0 auto; overflow:hidden; background:#2b1614; clip-path:inset(0 48% 0 48%); transform:scale(.92); transition:clip-path 1.05s cubic-bezier(.77,0,.18,1),transform 1.05s cubic-bezier(.22,1,.36,1); }
+    .project-card.is-visible .project-media { clip-path:inset(0); transform:scale(1); }
+    .project-media::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,.08); pointer-events:none; }
+    .project-media img { display:block; width:100%; height:100%; object-fit:cover; transform:scale(1.08); transition:transform 1.35s cubic-bezier(.22,1,.36,1); }
     .project-card.is-visible .project-media img { transform:scale(1); }
-    .project-copy { position:absolute; inset:auto 5vw 5vh; z-index:1; display:grid; grid-template-columns:minmax(60px,12vw) minmax(0,1fr); gap:24px; align-items:end; transform:translateY(48px); opacity:0; transition:transform .75s cubic-bezier(.2,.75,.25,1) .45s,opacity .55s ease .45s; }
-    .project-card.is-visible .project-copy { transform:translateY(0); opacity:1; }
-    .project-index { font-size:clamp(18px,2.5vw,42px); line-height:1; letter-spacing:-.04em; }
-    .project-title { margin:0; max-width:1000px; font-size:clamp(38px,8vw,128px); font-weight:500; letter-spacing:-.075em; line-height:.82; text-transform:uppercase; }
-    .project-subtitle { margin:18px 0 0; max-width:420px; font-size:clamp(12px,1.25vw,18px); line-height:1.1; }
-    @media (max-width:768px) { .projects-intro{min-height:30svh;padding:56px 20px}.project-stage,.project-card{min-height:580px}.project-copy{inset:auto 20px 30px;grid-template-columns:42px minmax(0,1fr);gap:12px}.project-media img{object-position:center}.project-title{font-size:clamp(40px,15vw,76px)}.project-subtitle{margin-top:13px} }
+    .project-copy { position:absolute; z-index:1; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:11% 5% 9%; color:#d60001; text-align:center; pointer-events:none; opacity:0; transition:opacity .25s linear .5s; }
+    .project-card.is-visible .project-copy { opacity:1; }
+    .project-title { margin:0; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(52px,8.6vw,126px); font-weight:400; letter-spacing:-.07em; line-height:.84; text-transform:uppercase; }
+    .project-subtitle { margin:0; font-size:clamp(16px,2.1vw,31px); font-weight:400; line-height:1; text-transform:uppercase; }
+    .project-play { position:absolute; z-index:2; top:50%; left:50%; display:grid; place-items:center; width:clamp(62px,8vw,116px); aspect-ratio:1; border:0; border-radius:50%; transform:translate(-50%,-50%) scale(.75); background:rgba(23,17,17,.68); color:#fff; opacity:0; transition:transform .5s cubic-bezier(.22,1,.36,1) .65s,opacity .2s .65s; }
+    .project-play::before { content:''; margin-left:7%; border-top:16px solid transparent; border-bottom:16px solid transparent; border-left:25px solid currentColor; }
+    .project-card.is-visible .project-play { transform:translate(-50%,-50%) scale(1); opacity:1; }
+    @media (max-width:768px) { .project-stage{padding:76px 0 0}.project-meta{width:84vw;margin-bottom:42px;font-size:18px;grid-template-columns:42px 1fr;gap:16px}.project-media{width:84vw;aspect-ratio:.64}.project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.project-play::before{border-top-width:13px;border-bottom-width:13px;border-left-width:20px} }
     @media (prefers-reduced-motion:reduce) { .project-media,.project-media img,.project-copy{transition:none}.project-media{clip-path:none}.project-copy{transform:none;opacity:1} }
     @media (min-width:769px) { .tmenu-mobile { display:none !important; } }
   </style>
@@ -91,13 +92,12 @@
   </main>
 
   <section class="projects" aria-label="Selected work">
-    <header class="projects-intro"><p>Selected work / scroll to reveal</p></header>
-    <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/projects/main.jpg" alt="Il Capo Production" loading="lazy"></figure><div class="project-copy"><span class="project-index">00</span><div><h2 class="project-title">Il Capo<br>Production</h2><p class="project-subtitle">Industrial Cinema 2.0</p></div></div></article></div>
-    <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/projects/tabi.jpg" alt="Maison Margiela Tabi" loading="lazy"></figure><div class="project-copy"><span class="project-index">01</span><div><h2 class="project-title">Maison<br>Margiela</h2><p class="project-subtitle">A Tabi Film · Iconic Shoe Masterpiece</p></div></div></article></div>
-    <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/projects/juventus.jpg" alt="Juventus Artissima" loading="lazy"></figure><div class="project-copy"><span class="project-index">02</span><div><h2 class="project-title">Juventus<br>Artissima</h2><p class="project-subtitle">Il Tappeto Verde · Junior Project</p></div></div></article></div>
-    <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/projects/valentino.jpg" alt="Valentino" loading="lazy"></figure><div class="project-copy"><span class="project-index">03</span><div><h2 class="project-title">Valentino</h2><p class="project-subtitle">Dans Valentino · Le Pavillon des Folies</p></div></div></article></div>
-    <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/projects/buccellati.jpg" alt="Buccellati" loading="lazy"></figure><div class="project-copy"><span class="project-index">04</span><div><h2 class="project-title">Buccellati</h2><p class="project-subtitle">Mosaico Bren · Heritage Film</p></div></div></article></div>
-    <div class="project-stage"><article class="project-card" data-project><figure class="project-media"><img src="assets/projects/gucci.jpg" alt="Gucci" loading="lazy"></figure><div class="project-copy"><span class="project-index">05</span><div><h2 class="project-title">Gucci</h2><p class="project-subtitle">Maison de l'Amour · A Defining Fashion Film</p></div></div></article></div>
+    <div class="project-stage"><article class="project-card" data-project><div class="project-meta"><span>00</span><span>IL CAPO PRODUCTION</span></div><figure class="project-media"><img src="assets/projects/main.jpg" alt="Il Capo Production" loading="lazy"><div class="project-copy"><h2 class="project-title">Industrial<br>Cinema</h2><p class="project-subtitle">Production</p></div><button class="project-play" type="button" aria-label="Открыть проект"></button></figure></article></div>
+    <div class="project-stage"><article class="project-card" data-project><div class="project-meta"><span>01</span><span>MAISON MARGIELA</span></div><figure class="project-media"><img src="assets/projects/tabi.jpg" alt="Maison Margiela Tabi" loading="lazy"><div class="project-copy"><h2 class="project-title">A Tabi<br>Film</h2><p class="project-subtitle">Iconic Shoe Masterpiece</p></div><button class="project-play" type="button" aria-label="Открыть проект"></button></figure></article></div>
+    <div class="project-stage"><article class="project-card" data-project><div class="project-meta"><span>02</span><span>JUVENTUS - ARTISSIMA</span></div><figure class="project-media"><img src="assets/projects/juventus.jpg" alt="Juventus Artissima" loading="lazy"><div class="project-copy"><h2 class="project-title">Il Tappeto<br>Verde</h2><p class="project-subtitle">Junior Project</p></div><button class="project-play" type="button" aria-label="Открыть проект"></button></figure></article></div>
+    <div class="project-stage"><article class="project-card" data-project><div class="project-meta"><span>03</span><span>VALENTINO</span></div><figure class="project-media"><img src="assets/projects/valentino.jpg" alt="Valentino" loading="lazy"><div class="project-copy"><h2 class="project-title">Le Pavillon<br>Des Folies</h2><p class="project-subtitle">Dans Valentino</p></div><button class="project-play" type="button" aria-label="Открыть проект"></button></figure></article></div>
+    <div class="project-stage"><article class="project-card" data-project><div class="project-meta"><span>04</span><span>BUCCELLATI</span></div><figure class="project-media"><img src="assets/projects/buccellati.jpg" alt="Buccellati" loading="lazy"><div class="project-copy"><h2 class="project-title">Mosaico<br>Bren</h2><p class="project-subtitle">Heritage Film</p></div><button class="project-play" type="button" aria-label="Открыть проект"></button></figure></article></div>
+    <div class="project-stage"><article class="project-card" data-project><div class="project-meta"><span>05</span><span>GUCCI</span></div><figure class="project-media"><img src="assets/projects/gucci.jpg" alt="Gucci" loading="lazy"><div class="project-copy"><h2 class="project-title">Maison de<br>L'Amour</h2><p class="project-subtitle">A Defining Fashion Film</p></div><button class="project-play" type="button" aria-label="Открыть проект"></button></figure></article></div>
   </section>
   <script>
     const cover=document.getElementById('video-cover'), video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container'), play=document.getElementById('play-button');
