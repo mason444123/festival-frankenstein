@@ -39,20 +39,14 @@
     .site-menu.is-open { display:block; }.site-menu a { display:block; width:max-content; color:#fff; text-decoration:none; font-size:clamp(28px,5vw,74px); line-height:1; margin:.17em 0; }
     .site-menu .nav-menu-buy { margin-top:28px; color:#bf1212; }
 
-    /* Il Capo project sequence: red scroll canvas, portrait media card and typography layered over it. */
-    .projects { position:relative; overflow:hidden; padding:0 0 clamp(80px,12vw,180px); background:#d60001; color:#050505; }
-    .project-stage { position:relative; padding:clamp(100px,13vw,180px) 0 0; }
-    .project-stage:first-child { padding-top:clamp(34px,4vw,60px); }
-    .project-card { position:relative; width:100%; overflow:visible; background:transparent; }
-    /* Раскрытие по принципу Il Capo: карточка начинает открываться заранее, растягивается из центра и только затем показывает типографику. */
-    .project-media { position:relative; width:100vw; aspect-ratio:.72; margin:0; overflow:hidden; background:#2b1614; clip-path:inset(0 49.5% 0 49.5%); transform:scale(.84); filter:brightness(.72) saturate(.78); will-change:clip-path,transform,filter; transition:clip-path 1.55s cubic-bezier(.77,0,.18,1),transform 1.55s cubic-bezier(.22,1,.36,1),filter 1.15s ease-out; }
-    .project-card.is-visible .project-media { clip-path:inset(0); transform:scale(1); filter:brightness(1) saturate(1); }
-    .project-media::after { content:''; position:absolute; z-index:1; inset:0; background:rgba(0,0,0,.38); pointer-events:none; opacity:1; transition:opacity 1.15s ease-out .18s; }
-    .project-card.is-visible .project-media::after { opacity:.15; }
-    .project-media img { display:block; width:100%; height:100%; object-fit:cover; transform:scale(1.18); will-change:transform; transition:transform 1.7s cubic-bezier(.22,1,.36,1); }
-    .project-card.is-visible .project-media img { transform:scale(1); }
-    .project-copy { position:absolute; z-index:2; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:11% 5% 9%; color:#d60001; text-align:center; pointer-events:none; opacity:0; transform:translateY(20px); transition:opacity .45s ease-out .82s,transform .65s cubic-bezier(.22,1,.36,1) .82s; }
-    .project-card.is-visible .project-copy { opacity:1; transform:translateY(0); }
+    /* Тот же принцип, что у Il Capo: секция закрепляется, а раскрытие зависит от реального прогресса скролла — не от разового IntersectionObserver. */
+    .projects { position:relative; overflow:clip; padding:0; background:#d60001; color:#050505; }
+    .project-stage { --reveal:0; --copy:0; position:relative; height:165svh; background:#d60001; }
+    .project-card { position:sticky; top:0; width:100%; height:100svh; overflow:hidden; background:#d60001; }
+    .project-media { position:absolute; inset:0; width:100vw; height:100svh; margin:0; overflow:hidden; background:#2b1614; clip-path:inset(0 calc((1 - var(--reveal)) * 50%) 0 calc((1 - var(--reveal)) * 50%)); transform:scale(calc(.84 + var(--reveal) * .16)); filter:brightness(calc(.72 + var(--reveal) * .28)) saturate(calc(.78 + var(--reveal) * .22)); will-change:clip-path,transform,filter; }
+    .project-media::after { content:''; position:absolute; z-index:1; inset:0; background:rgba(0,0,0,.38); pointer-events:none; opacity:calc(.4 - var(--reveal) * .25); }
+    .project-media img { display:block; width:100%; height:100%; object-fit:cover; transform:scale(calc(1.18 - var(--reveal) * .18)); will-change:transform; }
+    .project-copy { position:absolute; z-index:2; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:11% 5% 9%; color:#d60001; text-align:center; pointer-events:none; opacity:var(--copy); transform:translateY(calc((1 - var(--copy)) * 22px)); will-change:opacity,transform; }
     .project-title { margin:0; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(52px,8.6vw,126px); font-weight:400; letter-spacing:-.07em; line-height:.84; text-transform:uppercase; }
     .project-subtitle { margin:0; font-size:clamp(16px,2.1vw,31px); font-weight:400; line-height:1; text-transform:uppercase; }
     .event-info { min-height:clamp(400px,52vw,680px); margin-top:0; padding:clamp(28px,4vw,64px) 8vw; display:grid; grid-template-columns:clamp(42px,7vw,94px) 1fr; gap:clamp(18px,3vw,50px); align-content:space-between; border-top:1px solid #59100f; border-bottom:1px solid #59100f; background:radial-gradient(circle at 82% 14%,#35100f 0,transparent 34%),linear-gradient(135deg,#0c0c0b 0%,#15100f 100%); color:#ff4b3d; }
@@ -62,7 +56,7 @@
     .event-info__text { grid-column:2; max-width:760px; margin:clamp(22px,4vw,52px) 0 0; color:#f4ebe5; font-size:clamp(17px,1.8vw,26px); line-height:1.25; }
     .event-info__details { grid-column:2; margin:clamp(22px,3vw,44px) 0 0; color:#ff6959; font-size:clamp(17px,1.7vw,25px); line-height:1.13; text-transform:uppercase; }
     .event-info--red { background:radial-gradient(circle at 88% 10%,#ff5147 0,transparent 31%),linear-gradient(135deg,#e30b08 0%,#a90308 100%); border-color:#5a090a; color:#1d0807; }.event-info--red .event-info__kicker { color:#4c1511; }.event-info--red .event-info__title { color:#1a0807; }.event-info--red .event-info__text { color:#2c0b09; }.event-info--red .event-info__details { color:#4b100d; }
-    .event-info + .project-stage { padding-top:clamp(36px,5vw,70px); }
+
     .site-footer { position:relative; padding:clamp(48px,8vw,110px) 8vw clamp(28px,4vw,58px); background:radial-gradient(circle at 86% 0%,rgba(209,16,13,.28),transparent 28%),#080808; color:#f4ebe5; border-top:1px solid #7a1714; }
     .site-footer__top { display:grid; grid-template-columns:1.25fr 1fr auto; gap:28px; align-items:end; padding-bottom:clamp(38px,6vw,72px); border-bottom:1px solid rgba(255,92,77,.28); }
     .site-footer__brand { margin:0; color:#ff4b3d; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(42px,7vw,114px); font-weight:400; letter-spacing:-.075em; line-height:.78; text-transform:uppercase; }
@@ -71,8 +65,8 @@
     .legal-title { margin:0 0 12px; color:#ff6959; font-size:12px; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }.legal-text,.legal-links { margin:0; color:#f0b6a8; font-size:14px; line-height:1.52; }.legal-links { display:grid; gap:8px; }.legal-grid a { color:#fff4ee; text-decoration:none; border-bottom:1px solid rgba(255,105,89,.52); width:max-content; max-width:100%; }.legal-grid a:hover { color:#ff6959; }
     .developer-badge { display:inline-block; margin-top:clamp(20px,3vw,34px); padding:0; color:rgba(255,105,89,.72); font-size:10px; font-weight:700; letter-spacing:.04em; line-height:1.2; text-decoration:underline; text-decoration-color:rgba(255,105,89,.36); text-underline-offset:3px; text-transform:none; }
     @media (max-width:768px) { .site-footer{padding:50px 8vw 28px}.site-footer__top,.legal-grid{grid-template-columns:1fr;gap:26px}.site-footer__brand{font-size:clamp(56px,18vw,80px)}.site-footer__age{font-size:58px}.legal-grid{padding:38px 0}.developer-badge{font-size:9px} }
-    @media (max-width:768px) { .project-stage{padding:76px 0 0}.project-media{width:100vw;aspect-ratio:.64}.project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.event-info{min-height:0;margin-top:0;padding:34px 8vw 38px;grid-template-columns:42px 1fr;gap:16px}.event-info__title{font-size:clamp(52px,15vw,80px)}.event-info__text{font-size:18px}.event-info__details{font-size:18px}.project-stage:first-child{padding-top:26px} }
-    @media (prefers-reduced-motion:reduce) { .project-media,.project-media img,.project-copy{transition:none}.project-media{clip-path:none}.project-copy{transform:none;opacity:1} }
+    @media (max-width:768px) { .project-copy{padding:18% 4% 11%}.project-title{font-size:clamp(48px,13vw,86px)}.project-subtitle{font-size:18px}.event-info{min-height:0;margin-top:0;padding:34px 8vw 38px;grid-template-columns:42px 1fr;gap:16px}.event-info__title{font-size:clamp(52px,15vw,80px)}.event-info__text{font-size:18px}.event-info__details{font-size:18px} }
+    @media (prefers-reduced-motion:reduce) { .project-media{clip-path:none;transform:none;filter:none}.project-media img{transform:none}.project-copy{transform:none;opacity:1} }
     @media (min-width:769px) { .tmenu-mobile { display:none !important; } }
   </style>
 </head>
@@ -131,15 +125,30 @@
     function startProjectReveals() {
       if (projectRevealsStarted) return;
       projectRevealsStarted=true;
-      document.querySelectorAll('[data-project]').forEach(card => {
-        const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-          if (!entry.isIntersecting || entry.target.classList.contains('is-visible')) return;
-          // Два кадра сохраняют исходную узкую форму до начала перехода.
-          requestAnimationFrame(() => requestAnimationFrame(() => entry.target.classList.add('is-visible')));
-          observer.unobserve(entry.target);
-        }), { threshold:0.01, rootMargin:'0px 0px -18% 0px' });
-        observer.observe(card);
-      });
+      // Как на Il Capo: прогресс раскрытия — это положение sticky-секции в скролле,
+      // а не однократное событие появления элемента во viewport.
+      const states=[...document.querySelectorAll('[data-project]')].map(card=>({card,stage:card.closest('.project-stage'),current:0,target:0}));
+      let frame=0;
+      const render=()=>{
+        let keepAnimating=false;
+        states.forEach(state=>{
+          const travel=Math.max(1,state.stage.offsetHeight-window.innerHeight);
+          const raw=Math.max(0,Math.min(1,-state.stage.getBoundingClientRect().top/travel));
+          state.target=raw;
+          // Плавность Lenis/Framer Motion: даже при резком wheel-событии маска не прыгает кадром.
+          state.current+= (state.target-state.current)*.14;
+          if(Math.abs(state.target-state.current)<.001) state.current=state.target;
+          else keepAnimating=true;
+          const copy=Math.max(0,Math.min(1,(state.current-.34)/.5));
+          state.card.style.setProperty('--reveal',state.current.toFixed(4));
+          state.card.style.setProperty('--copy',copy.toFixed(4));
+        });
+        frame=keepAnimating?requestAnimationFrame(render):0;
+      };
+      const requestRender=()=>{ if(!frame) frame=requestAnimationFrame(render); };
+      window.addEventListener('scroll',requestRender,{passive:true});
+      window.addEventListener('resize',requestRender);
+      requestRender();
     }
     play.addEventListener('click', async event => {
       event.stopPropagation(); cover.style.opacity='0';
