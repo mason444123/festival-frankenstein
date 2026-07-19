@@ -54,7 +54,10 @@
   </div>
   <div class="curtain left"></div><div class="curtain right"></div>
   <main id="video-wrapper">
-    <video id="bgvid" muted loop playsinline preload="metadata"><source src="https://sandlerstudio.ru/wp-content/uploads/2025/08/N-N-2025-video-converter.com_.mp4" type="video/mp4"></video>
+    <video id="bgvid" muted loop playsinline preload="metadata">
+      <source media="(max-width: 768px)" src="assets/hero-mobile.mp4" type="video/mp4">
+      <source src="assets/hero-desktop.mp4" type="video/mp4">
+    </video>
     <div id="overlay-container"><img id="overlay-logo" src="https://sandlerstudio.ru/wp-content/uploads/2026/03/%D0%BB%D0%BE%D0%B3%D0%BE2026.png" alt="Логотип"></div>
   </main>
   <script>
