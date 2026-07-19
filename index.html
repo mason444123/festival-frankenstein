@@ -26,21 +26,26 @@
     body.video-started #overlay-container { opacity:1; }
     @keyframes pulse { 0%{transform:scale(1);opacity:1} 50%{transform:scale(1.1);opacity:.7} 100%{transform:scale(1);opacity:1} }
 
-    /* The source burger: four 2px red bars, used here as the separate menu element requested. */
-    .menu-trigger { position:fixed; z-index:10001; right:28px; top:28px; width:48px; height:44px; display:none; place-items:center; border:0; background:transparent; cursor:pointer; }
-    .menu-trigger span { display:block; width:28px; height:2px; margin:4px 0; background:#bf1212; transform-origin:center; transition:transform .3s ease,opacity .2s ease; }
-    .menu-trigger.is-visible { display:grid; }
-    .menu-trigger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-    .menu-trigger[aria-expanded="true"] span:nth-child(2){opacity:0}.menu-trigger[aria-expanded="true"] span:nth-child(3){opacity:0}
-    .menu-trigger[aria-expanded="true"] span:nth-child(4){transform:translateY(-6px) rotate(-45deg)}
-    .site-menu { position:fixed; z-index:10000; inset:0; display:none; background:#000; color:#fff; padding:90px 9vw 8vw; }
+    /* Exact mobile burger geometry from SandlerFest / Tilda's t-menuburger_second. */
+    .tmenu-mobile { position:fixed; z-index:10001; inset:0 0 auto; height:64px; display:none; background:#111; }
+    .tmenu-mobile.is-visible { display:block; }
+    .tmenu-mobile__container { position:relative; width:100%; height:64px; }
+    .t-menuburger { position:absolute; top:22px; right:20px; width:28px; height:20px; padding:0; border:0; background:transparent; cursor:pointer; transition:transform .5s ease-in-out; }
+    .t-menuburger span { position:absolute; right:0; display:block; height:3px; background:#bf1212; transition:.25s ease-in-out; }
+    .t-menuburger span:nth-child(1) { top:0; width:28px; }
+    .t-menuburger span:nth-child(2), .t-menuburger span:nth-child(3) { top:8px; width:80%; }
+    .t-menuburger span:nth-child(4) { top:16px; width:28px; }
+    .site-menu { position:fixed; z-index:10000; inset:64px 0 0; display:none; background:#000; color:#fff; padding:40px 9vw 8vw; }
     .site-menu.is-open { display:block; }.site-menu a { display:block; width:max-content; color:#fff; text-decoration:none; font-size:clamp(34px,6vw,86px); line-height:1; margin:.17em 0; }
-
-    @media (max-width:768px) { .menu-trigger.is-visible { right:14px; top:13px; } }
+    @media (min-width:769px) { .tmenu-mobile { display:none !important; } }
   </style>
 </head>
 <body>
-  <button class="menu-trigger" id="menuTrigger" type="button" aria-label="Навигационное меню" aria-expanded="false"><span></span><span></span><span></span><span></span></button>
+  <div class="tmenu-mobile" id="mobileMenuBar">
+    <div class="tmenu-mobile__container">
+      <button class="t-menuburger t-menuburger_second" id="menuTrigger" type="button" aria-label="Навигационное меню" aria-expanded="false"><span></span><span></span><span></span><span></span></button>
+    </div>
+  </div>
   <nav class="site-menu" id="siteMenu" aria-hidden="true"><a href="#">Главная</a><a href="#">Скоро здесь</a></nav>
 
   <div id="video-cover" aria-label="Запустить сайт">
@@ -54,10 +59,10 @@
   </main>
   <script>
     const cover=document.getElementById('video-cover'), video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container'), play=document.getElementById('play-button');
-    const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu');
+    const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu'), mobileMenuBar=document.getElementById('mobileMenuBar');
     play.addEventListener('click', async event => {
       event.stopPropagation(); cover.style.opacity='0';
-      setTimeout(()=>{ cover.style.display='none'; document.body.classList.add('video-started'); video.style.opacity='1'; menuTrigger.classList.add('is-visible'); },500);
+      setTimeout(()=>{ cover.style.display='none'; document.body.classList.add('video-started'); video.style.opacity='1'; mobileMenuBar.classList.add('is-visible'); },500);
       try { await video.play(); setTimeout(()=>{ overlay.style.opacity='1'; },1500); } catch(error) { console.warn('Видео не запустилось',error); }
     });
     menuTrigger.addEventListener('click',()=>{ const open=menuTrigger.getAttribute('aria-expanded')==='true'; menuTrigger.setAttribute('aria-expanded',String(!open)); menu.classList.toggle('is-open',!open); menu.setAttribute('aria-hidden',String(open)); });
