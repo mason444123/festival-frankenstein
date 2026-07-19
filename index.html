@@ -8,8 +8,8 @@
     * { box-sizing:border-box; }
     html, body { margin:0; min-height:100%; background:#000; }
     body { overflow-x:hidden; font-family:Arial,Helvetica,sans-serif; }
-    /* Постоянная верхняя навигация: только после старта видео, чтобы знак и бургер читались на любом кадре. */
-    body::before { content:''; position:fixed; z-index:10001; top:0; left:0; right:0; height:94px; pointer-events:none; opacity:0; visibility:hidden; background:linear-gradient(180deg,rgba(5,5,5,.64) 0%,rgba(5,5,5,.34) 66%,transparent 100%); -webkit-backdrop-filter:blur(18px) saturate(.82); backdrop-filter:blur(18px) saturate(.82); transition:opacity .38s ease,visibility 0s linear .38s; }
+    /* Тонкая стеклянная шапка: нижняя граница растворяется в кадре, а не режет его полосой. */
+    body::before { content:''; position:fixed; z-index:10001; top:0; left:0; right:0; height:92px; pointer-events:none; opacity:0; visibility:hidden; background:linear-gradient(180deg,rgba(5,5,5,.40) 0%,rgba(5,5,5,.30) 38%,rgba(5,5,5,.12) 66%,transparent 100%); -webkit-backdrop-filter:blur(14px) saturate(.88); backdrop-filter:blur(14px) saturate(.88); -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 42%,rgba(0,0,0,.52) 72%,transparent 100%); mask-image:linear-gradient(to bottom,#000 0%,#000 42%,rgba(0,0,0,.52) 72%,transparent 100%); transition:opacity .38s ease,visibility 0s linear .38s; }
     body.video-started:not(.menu-open)::before { opacity:1; visibility:visible; transition:opacity .38s ease; }
 
     /* SandlerFest hero — copied interaction and geometry */
@@ -21,9 +21,6 @@
     .hero-kicker { position:absolute; left:50%; width:max-content; max-width:88vw; margin:0; font-size:clamp(12px,1.35vw,20px); font-weight:800; letter-spacing:.1em; line-height:1.04; text-transform:uppercase; opacity:0; filter:blur(6px); transition:transform 1s cubic-bezier(.16,1,.3,1),opacity .55s ease,filter .8s ease; }
     .hero-kicker--top { top:29%; transform:translate(-50%,20px) rotate(-3deg); }.hero-kicker--bottom { top:67%; transform:translate(-50%,-20px) rotate(2deg); }
 
-    #video-cover { position:fixed; inset:0; width:100vw; height:100vh; height:100svh; height:100dvh; min-height:100dvh; background:#000; display:flex; justify-content:center; align-items:center; flex-direction:column; z-index:9999; cursor:pointer; transition:opacity .5s ease; overflow:hidden; }
-    #cover-logo { width:80vw; max-width:800px; min-width:180px; margin:0 0 20px; color:#fff; text-align:center; font-family:Arial,Helvetica,sans-serif; font-size:clamp(42px,10vw,154px); font-weight:900; letter-spacing:-.075em; line-height:.82; text-transform:lowercase; opacity:.85; }
-    #play-button { width:80px; height:80px; background:url('https://sandlerstudio.ru/wp-content/uploads/2025/08/4bb904e9d4c59a85298a015f06bf1fbe.png') no-repeat center/contain; border:0; outline:0; cursor:pointer; animation:pulse 2s infinite; z-index:1; }
     .curtain { position:fixed; top:0; width:50vw; height:100vh; height:100svh; background:#000; z-index:9998; transition:transform 1.5s ease; }
     .curtain.left { left:0; transform:translateX(0); }
     .curtain.right { right:0; transform:translateX(0); }
@@ -102,9 +99,6 @@
     <a style="--i:7" href="https://voroh.ru/widget/event/1036665/019ef4a4-09d5-8687-8cf4-a35183b37649/" target="_blank" rel="noopener" class="nav-menu-buy">Купить билет</a>
   </nav>
 
-  <div id="video-cover" aria-hidden="true">
-    <div id="cover-logo" aria-label="custom843">custom843</div>
-  </div>
   <div class="curtain left"></div><div class="curtain right"></div>
   <main id="video-wrapper">
     <video id="bgvid" autoplay muted loop playsinline preload="auto">
@@ -150,7 +144,7 @@
     <a class="developer-badge" href="https://t.me/bugaev_space" target="_blank" rel="noopener">Разработчик сайта</a>
   </footer>
   <script>
-    const cover=document.getElementById('video-cover'), video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container');
+    const video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container');
     const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu'), mobileMenuBar=document.getElementById('mobileMenuBar'), siteBrand=document.getElementById('siteBrand');
     let projectRevealsStarted=false;
     function startProjectReveals() {
@@ -188,20 +182,19 @@
     }
     function launchSite() {
       if (document.body.classList.contains('video-started')) return;
-      cover.style.opacity='0';
-      setTimeout(()=>{
-        cover.style.display='none';
-        document.body.classList.add('video-started');
-        video.style.opacity='1';
-        mobileMenuBar.classList.add('is-visible');
-        siteBrand.classList.add('is-visible');
-        startProjectReveals();
-      },180);
+      // Единственный стартовый экран — две шторы. Никакой плашки и никакого клика поверх видео.
+      document.body.classList.add('video-started');
+      video.style.opacity='1';
+      mobileMenuBar.classList.add('is-visible');
+      siteBrand.classList.add('is-visible');
+      startProjectReveals();
       video.muted=true;
       video.defaultMuted=true;
       video.play().then(()=>setTimeout(()=>{ overlay.style.opacity='1'; },1500)).catch(error=>console.warn('Автовоспроизведение видео заблокировано',error));
     }
-    window.addEventListener('load',()=>setTimeout(launchSite,80),{once:true});
+    const scheduleLaunch=()=>setTimeout(launchSite,80);
+    if (document.readyState==='loading') document.addEventListener('DOMContentLoaded',scheduleLaunch,{once:true});
+    else scheduleLaunch();
     const toggleMenu=forceOpen=>{ const open=forceOpen ?? menuTrigger.getAttribute('aria-expanded')!=='true'; menuTrigger.setAttribute('aria-expanded',String(open)); menu.classList.toggle('is-open',open); menu.setAttribute('aria-hidden',String(!open)); document.body.classList.toggle('menu-open',open); };
     menuTrigger.addEventListener('click',()=>toggleMenu());
     document.addEventListener('keydown',event=>{ if(event.key==='Escape' && menuTrigger.getAttribute('aria-expanded')==='true') toggleMenu(false); });
