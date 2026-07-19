@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Магазин Custom — Футболки Custom · Коллекция</title>
+  <meta name="description" content="Магазин проекта Custom: футболки Custom в нескольких цветах. Заказ через Telegram.">
+  <meta name="theme-color" content="#0c0c0b">
+  <link rel="icon" href="favicon.ico?v=20260605214846" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=20260605214846">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png?v=20260605214846">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=20260605214846">
+  <style>
+    * { box-sizing:border-box; }
+    html, body { margin:0; min-height:100%; background:#0c0c0b; overscroll-behavior-y:none; }
+    body { overflow-x:hidden; font-family:Arial,Helvetica,sans-serif; color:#f4ebe5; }
+    a { color:inherit; }
+    ::selection { background:#e30b08; color:#160707; }
+
+    /* ─── TOP NAV ─── */
+    .top { position:fixed; top:0; left:0; right:0; z-index:50; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px clamp(18px,4vw,48px); background:linear-gradient(to bottom,rgba(8,8,8,.86) 0%,transparent 100%); }
+    .brand { display:inline-flex; align-items:baseline; gap:3px; text-decoration:none; color:#f4ebe5; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(22px,2.2vw,30px); font-weight:400; letter-spacing:-.06em; line-height:.9; text-transform:lowercase; }
+    .brand b { color:#ff4b3d; font-weight:400; }
+    .back { display:inline-flex; align-items:center; gap:8px; padding:10px 18px 9px; text-decoration:none; font-family:Arial,sans-serif; font-size:11px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; color:#160707; background:#e30b08; border:1px solid #ff6959; border-radius:0; box-shadow:5px 5px 0 #5b0909; transition:background .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease; }
+    .back:hover { background:#ff4b3d; color:#fff8f4; box-shadow:2px 2px 0 #5b0909; transform:translate(3px,3px); }
+
+    /* ─── HERO ─── */
+    .hero { position:relative; min-height:88vh; min-height:88svh; padding:clamp(110px,16vh,160px) clamp(20px,6vw,80px) clamp(40px,7vw,90px); overflow:hidden; background:radial-gradient(circle at 50% 38%,#3a1110 0%,transparent 38%),radial-gradient(circle at 86% 8%,#2a0d0c 0%,transparent 30%),linear-gradient(135deg,#0c0c0b 0%,#15100f 100%); color:#f4ebe5; }
+    .hero-frame { max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:clamp(18px,3vw,34px); }
+    .hero-kicker { display:inline-flex; align-items:center; gap:14px; color:#ff6959; font-size:clamp(11px,1.1vw,14px); font-weight:900; letter-spacing:.18em; line-height:1; text-transform:uppercase; opacity:0; transform:translateY(18px); animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .12s forwards; }
+    .hero-kicker::before { content:''; width:42px; height:1px; background:#e30b08; }
+    .hero-kicker .num { color:#e30b08; }
+    .hero-title { margin:0; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(60px,12.5vw,176px); font-weight:400; letter-spacing:-.08em; line-height:.82; text-transform:uppercase; color:#f4ebe5; opacity:0; transform:translateY(28px); animation:fadeUp 1.05s cubic-bezier(.16,1,.3,1) .22s forwards; }
+    .hero-title em { font-style:normal; color:#ff4b3d; }
+    .hero-title b { font-weight:400; color:#e30b08; }
+    .hero-lead { max-width:640px; margin:0; color:#f0b6a8; font-size:clamp(16px,1.7vw,23px); line-height:1.34; opacity:0; transform:translateY(24px); animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .34s forwards; }
+    .hero-meta { display:flex; flex-wrap:wrap; gap:clamp(14px,2vw,28px) clamp(22px,3vw,40px); margin-top:clamp(8px,1.4vw,14px); padding-top:clamp(18px,2.4vw,28px); border-top:1px solid rgba(255,105,89,.32); opacity:0; transform:translateY(20px); animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .44s forwards; }
+    .hero-stat { display:flex; flex-direction:column; gap:5px; }
+    .hero-stat__num { font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(26px,3vw,44px); font-weight:400; letter-spacing:-.04em; line-height:1; text-transform:uppercase; color:#ff4b3d; }
+    .hero-stat__label { font-size:clamp(11px,1vw,13px); font-weight:900; letter-spacing:.14em; line-height:1; text-transform:uppercase; color:#a79a93; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+    .hero-hairline { position:absolute; left:clamp(20px,6vw,80px); right:clamp(20px,6vw,80px); bottom:0; height:1px; background:linear-gradient(90deg,transparent,rgba(255,105,89,.55) 30%,rgba(255,105,89,.55) 70%,transparent); }
+
+    /* ─── COLLECTION ─── */
+    .collection-section { position:relative; padding:clamp(58px,9vw,110px) clamp(20px,6vw,80px) clamp(70px,11vw,130px); background:radial-gradient(circle at 12% 96%,#2a0d0c 0%,transparent 32%),radial-gradient(circle at 92% 4%,#24100f 0%,transparent 30%),#0a0909; overflow:hidden; }
+    .collection-head { position:relative; max-width:1180px; margin:0 auto clamp(36px,5vw,64px); display:grid; grid-template-columns:clamp(42px,7vw,94px) 1fr; gap:clamp(18px,3vw,50px); align-items:start; }
+    .collection-head__number { font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(28px,3.4vw,52px); font-weight:400; letter-spacing:-.04em; line-height:.86; color:#e30b08; }
+    .collection-head__eyebrow { margin:0 0 10px; color:#ff6959; font-size:clamp(11px,1.1vw,14px); font-weight:900; letter-spacing:.16em; text-transform:uppercase; }
+    .collection-head__title { margin:0; color:#f4ebe5; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(46px,7.8vw,118px); font-weight:400; letter-spacing:-.07em; line-height:.84; text-transform:uppercase; }
+    .collection-head__title em { font-style:normal; color:#ff4b3d; }
+
+    .collection { max-width:1180px; margin:0 auto; border-top:1px solid rgba(255,105,89,.28); }
+    .card { position:relative; display:grid; grid-template-columns:1fr; padding:clamp(28px,5vw,52px) 0; border-bottom:1px solid rgba(255,105,89,.28); cursor:pointer; opacity:0; transform:translateY(34px); transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1); }
+    .card.is-revealed { opacity:1; transform:translateY(0); }
+    .card-meta { display:flex; align-items:baseline; justify-content:space-between; gap:18px; margin-bottom:clamp(16px,2.4vw,26px); }
+    .card-index { color:#e30b08; font-size:11px; font-weight:900; letter-spacing:.16em; text-transform:uppercase; line-height:1; }
+    .card-kicker { color:#a79a93; font-size:11px; font-weight:900; letter-spacing:.16em; text-transform:uppercase; line-height:1; }
+
+    .card-media { position:relative; width:100%; overflow:hidden; background:#0a0807; aspect-ratio:5/4; clip-path:inset(0 100% 0 0); transform:scale(1.04); transition:clip-path 1.05s cubic-bezier(.76,0,.24,1),transform 1.2s cubic-bezier(.16,1,.3,1); will-change:clip-path,transform; }
+    .card.is-revealed .card-media { clip-path:inset(0 0 0 0); transform:scale(1); }
+    .card-media img { display:block; width:100%; height:100%; object-fit:cover; transition:transform .9s cubic-bezier(.16,1,.3,1),filter .5s ease; will-change:transform; }
+    .card-media::after { content:''; position:absolute; left:0; bottom:0; height:1px; width:0; background:#e30b08; transition:width .5s cubic-bezier(.16,1,.3,1); }
+    .card:hover .card-media img { transform:scale(1.045); filter:brightness(1.04) saturate(1.06); }
+    .card:hover .card-media::after { width:100%; }
+    .card:focus-visible { outline:none; }
+    .card:focus-visible .card-media img { transform:scale(1.045); }
+    .card:focus-visible .card-media::after { width:100%; }
+
+    .card-body { margin-top:clamp(22px,3vw,34px); display:flex; flex-direction:column; gap:clamp(10px,1.4vw,16px); align-items:flex-start; }
+    .card h2 { margin:0; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(34px,5.6vw,72px); font-weight:400; letter-spacing:-.065em; line-height:.84; text-transform:uppercase; color:#f4ebe5; }
+    .card h2 em { font-style:normal; color:#ff4b3d; }
+    .card-poetry { margin:0; max-width:540px; color:#f0b6a8; font-size:clamp(15px,1.6vw,21px); line-height:1.36; }
+    .card-cta { display:inline-flex; align-items:center; gap:10px; margin-top:clamp(2px,.8vw,8px); padding:0; background:transparent; color:#ff6959; font-family:Arial,sans-serif; font-size:12px; font-weight:900; letter-spacing:.14em; line-height:1; text-transform:uppercase; border:0; box-shadow:none; }
+    .card-cta .arrow { display:inline-block; transition:transform .3s cubic-bezier(.16,1,.3,1); }
+    .card:hover .card-cta .arrow, .card:focus-visible .card-cta .arrow { transform:translateX(6px); }
+
+    /* ─── FOOTER BAND ─── */
+    .shop-foot { position:relative; padding:clamp(38px,6vw,68px) clamp(20px,6vw,80px) clamp(28px,4vw,44px); background:radial-gradient(circle at 86% 0%,rgba(209,16,13,.26),transparent 30%),#080808; color:#f4ebe5; border-top:1px solid #7a1714; text-align:center; }
+    .shop-foot__kicker { margin:0 0 8px; color:#ff6959; font-size:11px; font-weight:900; letter-spacing:.16em; text-transform:uppercase; }
+    .shop-foot__line { margin:0; color:#f4ebe5; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(20px,2.6vw,34px); font-weight:400; letter-spacing:-.045em; line-height:.9; text-transform:uppercase; }
+    .shop-foot__line b { font-weight:400; color:#ff4b3d; }
+
+    /* ─── PRODUCT MODAL ─── */
+    .product-modal { position:fixed; inset:0; z-index:20000; display:grid; place-items:center; padding:18px; background:rgba(7,5,5,.76); backdrop-filter:blur(16px); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .3s ease,visibility 0s linear .3s; }
+    .product-modal.open { opacity:1; visibility:visible; pointer-events:auto; transition:opacity .3s ease; }
+    .product-panel { position:relative; width:min(100%,1080px); max-height:min(94svh,920px); overflow:auto; padding:clamp(20px,3.4vw,40px); background:#0c0c0b; border:0; box-shadow:none; transform:translateY(20px) scale(.98); transition:transform .36s cubic-bezier(.22,1,.36,1); }
+    .product-modal.open .product-panel { transform:translateY(0) scale(1); }
+    .product-top { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; padding-bottom:clamp(20px,2.6vw,30px); }
+    .product-eyebrow { display:block; color:#ff6959; font-size:10px; font-weight:900; letter-spacing:.16em; text-transform:uppercase; margin-bottom:6px; }
+    .product-title { font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(28px,4.4vw,56px); font-weight:400; letter-spacing:-.06em; line-height:.84; text-transform:uppercase; color:#f4ebe5; }
+    .product-sub { margin-top:8px; color:#f0b6a8; font-size:clamp(14px,1.5vw,18px); line-height:1.34; max-width:640px; }
+    .close { flex:0 0 auto; width:40px; height:40px; border:1px solid rgba(244,235,229,.14); border-radius:0; background:transparent; color:#f4ebe5; font-size:24px; font-weight:300; line-height:1; cursor:pointer; transition:background .2s,color .2s,transform .2s,border-color .2s; }
+    .close:hover, .close:focus-visible { background:#e30b08; color:#160707; outline:none; transform:translate(2px,2px); }
+
+    .product-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.8fr); gap:clamp(18px,3vw,32px); margin-top:clamp(20px,3vw,28px); align-items:start; }
+    .gallery { display:grid; gap:14px; min-height:0; }
+    .gallery-stage { position:relative; overflow:hidden; background:#000; border:0; height:min(64svh,560px); cursor:pointer; clip-path:inset(0 0 0 0); }
+    .gallery-stage img { display:block; width:100%; height:100%; object-fit:contain; background:#000; transition:opacity .28s ease; touch-action:pan-y; }
+    .gallery-stage img.fading { opacity:0; }
+    .gallery-stage::after { content:''; position:absolute; left:0; bottom:0; width:100%; height:2px; background:#e30b08; transform:scaleX(0); transform-origin:left; transition:transform .45s cubic-bezier(.16,1,.3,1); }
+    .gallery-stage:hover::after { transform:scaleX(1); }
+    .gallery-hint { display:flex; align-items:center; justify-content:center; gap:12px; color:#a79a93; font-family:Arial,sans-serif; font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+    .gallery-hint .bar { width:22px; height:1px; background:rgba(244,235,229,.22); }
+
+    .product-side { display:flex; flex-direction:column; gap:clamp(20px,2.6vw,28px); }
+    .info-card { padding:0; border:0; background:transparent; }
+    .info-label { color:#e30b08; font-size:10px; font-weight:900; letter-spacing:.16em; text-transform:uppercase; }
+    .info-value { margin-top:8px; font-family:Didot,"Bodoni MT",Georgia,serif; font-size:clamp(20px,2.2vw,30px); font-weight:400; letter-spacing:-.04em; line-height:.86; text-transform:uppercase; color:#f4ebe5; }
+    .photo-note { margin-top:8px; color:#f0b6a8; font-size:clamp(14px,1.4vw,17px); line-height:1.42; }
+    .buy-btn { display:inline-flex; justify-content:center; align-items:center; padding:14px 22px 13px; text-decoration:none; font-family:Arial,sans-serif; font-weight:900; font-size:clamp(13px,1.3vw,16px); letter-spacing:.12em; text-transform:uppercase; line-height:1; color:#160707; background:#e30b08; border:1px solid #ff6959; border-radius:0; box-shadow:7px 7px 0 #5b0909; transition:background .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease; }
+    .buy-btn:hover, .buy-btn:focus-visible { background:#ff4b3d; color:#fff8f4; box-shadow:3px 3px 0 #5b0909; transform:translate(4px,4px); outline:none; }
+    .buy-btn:active { transform:translate(6px,6px) scale(.98); box-shadow:1px 1px 0 #5b0909; }
+    .buy-note { color:#a79a93; font-size:12px; line-height:1.5; text-align:center; letter-spacing:.02em; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width:1080px) { .product-layout { grid-template-columns:1fr; } .gallery-stage { height:min(54svh,460px); } }
+    @media (max-width:768px) {
+      .brand { font-size:20px; }
+      .back { padding:9px 14px 8px; font-size:10px; }
+      .hero { min-height:80vh; min-height:80svh; padding:96px 20px 56px; }
+      .hero-title { font-size:clamp(48px,14vw,84px); }
+      .collection-section { padding:54px 20px 70px; }
+      .collection-head { grid-template-columns:42px 1fr; gap:16px; margin-bottom:36px; }
+      .collection-head__title { font-size:clamp(48px,14vw,86px); }
+      .card { padding:28px 0; }
+      .card-media { aspect-ratio:5/5; }
+      .card h2 { font-size:clamp(32px,9vw,46px); }
+      .product-panel { padding:18px; max-height:calc(100svh - 20px); }
+      .product-title { font-size:clamp(26px,8vw,36px); }
+      .gallery-stage { height:min(46svh,380px); }
+      .info-card { padding:0; }
+      .buy-btn { padding:13px 18px 12px; font-size:13px; }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      *, *::before, *::after { animation:none!important; transition:none!important; }
+      .hero-kicker, .hero-title, .hero-lead, .hero-meta, .card { opacity:1!important; transform:none!important; }
+      .card-media { clip-path:inset(0 0 0 0); transform:none; }
+      html { scroll-behavior:auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html">custom<b>.</b>843</a>
+    <a class="back" href="index.html">← На главную</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero-frame">
+      <p class="hero-kicker"><span class="num">01</span>Магазин · Коллекция футболок</p>
+      <h1 class="hero-title">Футболки <em>Custom</em></h1>
+      <p class="hero-lead">Капсульная линейка футболок проекта — четыре цвета, один силуэт. Каждая вещь носится самостоятельно и держит образ как основная, а не сувенирная деталь.</p>
+      <div class="hero-meta">
+        <div class="hero-stat"><span class="hero-stat__num">04</span><span class="hero-stat__label">цветовых решения</span></div>
+        <div class="hero-stat"><span class="hero-stat__num">02</span><span class="hero-stat__label">ракурса на модель</span></div>
+        <div class="hero-stat"><span class="hero-stat__num">TG</span><span class="hero-stat__label">заказ через Telegram</span></div>
+      </div>
+    </div>
+    <div class="hero-hairline"></div>
+  </section>
+
+  <section class="collection-section">
+    <div class="collection-head">
+      <span class="collection-head__number">02</span>
+      <div>
+        <p class="collection-head__eyebrow">Магазин · Коллекция</p>
+        <h2 class="collection-head__title">Выбери свою <em>Custom</em></h2>
+      </div>
+    </div>
+    <div class="collection" id="productGrid" aria-label="Коллекция футболок Custom"></div>
+  </section>
+
+  <footer class="shop-foot">
+    <p class="shop-foot__kicker">Custom 843 · Казань</p>
+    <p class="shop-foot__line">Заказ через <b>Telegram</b></p>
+  </footer>
+
+  <div class="product-modal" id="productModal" aria-hidden="true">
+    <div class="product-panel" role="dialog" aria-modal="true" aria-labelledby="productTitle">
+      <div class="product-top">
+        <div>
+          <span class="product-eyebrow">Карточка товара</span>
+          <div class="product-title" id="productTitle">Футболка Custom</div>
+          <div class="product-sub" id="productSub"></div>
+        </div>
+        <button class="close" id="productClose" aria-label="Закрыть">×</button>
+      </div>
+      <div class="product-layout">
+        <div class="gallery">
+          <div class="gallery-stage" id="galleryStage">
+            <img id="galleryImage" src="" alt="">
+          </div>
+          <div class="gallery-hint"><span class="bar"></span>Нажмите или листайте, чтобы перевернуть<span class="bar"></span></div>
+        </div>
+        <div class="product-side">
+          <div class="info-card">
+            <div class="info-label">Ракурс</div>
+            <div class="info-value" id="productSide"></div>
+            <div class="photo-note" id="photoNote"></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">О модели</div>
+            <div class="photo-note" id="productDescription"></div>
+          </div>
+          <a class="buy-btn" id="buyBtn" href="#" target="_blank" rel="noopener">Купить через Telegram</a>
+          <div class="buy-note">Ответим по наличию, размерам и доставке.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      {
+        id: 'orange',
+        title: 'Оранжевая',
+        color: 'Оранжевая',
+        poetry: 'Яркая футболка, говорящая о стиле и красоте.',
+        description: 'Самая акцентная футболка в линейке: яркий оранжевый цвет, который сразу читается в кадре, на улице и на вечернем свете.',
+        images: [
+          { src: 'assets/shop/B2b (orange-top).png', side: 'Передняя сторона', note: 'Оранжевая футболка Custom — передняя сторона. Яркий вариант, который сразу цепляет взгляд и хорошо смотрится в живом движении.' },
+          { src: 'assets/shop/B2b (orange-back).png', side: 'Задняя сторона', note: 'Оранжевая футболка Custom — задняя сторона. Сохраняет тот же мощный цвет и выглядит как полноценный мерч, а не просто базовая вещь.' }
+        ]
+      },
+      {
+        id: 'black',
+        title: 'Чёрная',
+        color: 'Чёрная',
+        poetry: 'Сильная футболка, говорящая о стиле и красоте.',
+        description: 'Чёрная футболка — безопасный и всегда сильный выбор: выглядит собранно, подходит под любой образ и хорошо держит графику.',
+        images: [
+          { src: 'assets/shop/B2b (black-top).png', side: 'Передняя сторона', note: 'Чёрная футболка Custom — передняя сторона. Самый универсальный вариант для тех, кто любит чистый и уверенный мерч.' },
+          { src: 'assets/shop/B2b (black-back).png', side: 'Задняя сторона', note: 'Чёрная футболка Custom — задняя сторона. Сзади выглядит так же цельно и может быть основной вещью, а не просто сувениром.' }
+        ]
+      },
+      {
+        id: 'blue',
+        title: 'Синяя',
+        color: 'Синяя',
+        poetry: 'Свежая футболка, говорящая о стиле и красоте.',
+        description: 'Синяя футболка выделяется спокойнее, чем оранжевая, но выглядит свежо и нестандартно. Хороший вариант, если хочется цвет, но без перегруза.',
+        images: [
+          { src: 'assets/shop/B2b (blue-top).png', side: 'Передняя сторона', note: 'Синяя футболка Custom — передняя сторона. Цвет выглядит свежо и чуть более редким, чем стандартные мерчевые решения.' },
+          { src: 'assets/shop/B2b (blue-back).png', side: 'Задняя сторона', note: 'Синяя футболка Custom — задняя сторона. Сзади работает так же уверенно и сохраняет яркость образа.' }
+        ]
+      },
+      {
+        id: 'white',
+        title: 'Белая',
+        color: 'Белая',
+        poetry: 'Чистая футболка, говорящая о стиле и красоте.',
+        description: 'Белая футболка даёт лёгкое летнее ощущение и лучше всего раскрывается днём, на солнце и в чистых casual-образах.',
+        images: [
+          { src: 'assets/shop/B2b (white-top).png', side: 'Передняя сторона', note: 'Белая футболка Custom — передняя сторона. Чистый летний вариант, который выглядит легко и аккуратно.' },
+          { src: 'assets/shop/B2b (white-back).png', side: 'Задняя сторона', note: 'Белая футболка Custom — задняя сторона. Светлый вариант с более воздушным ощущением и хорошей читаемостью.' }
+        ]
+      }
+    ];
+
+    const grid = document.getElementById('productGrid');
+    const modal = document.getElementById('productModal');
+    const closeBtn = document.getElementById('productClose');
+    const titleEl = document.getElementById('productTitle');
+    const subEl = document.getElementById('productSub');
+    const sideEl = document.getElementById('productSide');
+    const noteEl = document.getElementById('photoNote');
+    const descEl = document.getElementById('productDescription');
+    const galleryImage = document.getElementById('galleryImage');
+    const buyBtn = document.getElementById('buyBtn');
+
+    let activeProduct = null;
+    let activeIndex = 0;
+
+    function telegramLink(product) {
+      const acc = { orange: 'оранжевую', black: 'чёрную', blue: 'синюю', white: 'белую' };
+      const text = `Здравствуйте! Хочу заказать ${acc[product.id]} футболку Custom. Подскажите, пожалуйста, по наличию, размерам и дальнейшему оформлению заказа.`;
+      return `https://t.me/custom_843?text=${encodeURIComponent(text)}`;
+    }
+
+    function renderCards() {
+      grid.innerHTML = products.map((product, i) => `
+        <article class="card" data-product="${product.id}" tabindex="0" role="button" aria-label="Открыть карточку товара ${product.title}">
+          <div class="card-meta">
+            <span class="card-index">0${i + 1} / 04</span>
+            <span class="card-kicker">Футболка Custom</span>
+          </div>
+          <div class="card-media"><img src="${product.images[0].src}" alt="${product.title} футболка Custom" loading="lazy"></div>
+          <div class="card-body">
+            <h2>${product.title}<em>.</em></h2>
+            <p class="card-poetry">${product.poetry}</p>
+            <span class="card-cta">Открыть карточку <span class="arrow">→</span></span>
+          </div>
+        </article>
+      `).join('');
+
+      grid.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => openProduct(card.dataset.product));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openProduct(card.dataset.product);
+          }
+        });
+      });
+
+      const cards = grid.querySelectorAll('.card');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+      cards.forEach((card) => io.observe(card));
+    }
+
+    function renderGallery() {
+      const image = activeProduct.images[activeIndex];
+      galleryImage.classList.add('fading');
+      setTimeout(() => {
+        galleryImage.src = image.src;
+        galleryImage.alt = `${activeProduct.title} футболка Custom — ${image.side}`;
+        galleryImage.classList.remove('fading');
+      }, 180);
+      sideEl.textContent = image.side;
+      noteEl.textContent = image.note;
+    }
+
+    function openProduct(id) {
+      activeProduct = products.find(p => p.id === id);
+      activeIndex = 0;
+      titleEl.textContent = `${activeProduct.title} футболка`;
+      subEl.textContent = activeProduct.poetry;
+      descEl.textContent = activeProduct.description;
+      buyBtn.href = telegramLink(activeProduct);
+      renderGallery();
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+
+    let focusReturn = null;
+    function closeProduct() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      focusReturn && focusReturn.focus && focusReturn.focus();
+      focusReturn = null;
+    }
+
+    const galleryStageEl = document.getElementById('galleryStage');
+    let clickLock = false;
+    galleryStageEl.addEventListener('click', () => {
+      if (!activeProduct || clickLock) return;
+      clickLock = true;
+      activeIndex = (activeIndex + 1) % activeProduct.images.length;
+      renderGallery();
+      setTimeout(() => { clickLock = false; }, 300);
+    });
+    let touchStartX = 0, touchStartY = 0, touchMoved = false;
+    galleryStageEl.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+      touchMoved = false;
+    }, { passive: true });
+    galleryStageEl.addEventListener('touchmove', () => { touchMoved = true; }, { passive: true });
+    galleryStageEl.addEventListener('touchend', (e) => {
+      if (!activeProduct || !touchMoved) return;
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const dx = touchStartX - touchEndX;
+      const dy = touchStartY - touchEndY;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        if (dx > 0) {
+          activeIndex = (activeIndex + 1) % activeProduct.images.length;
+        } else {
+          activeIndex = (activeIndex - 1 + activeProduct.images.length) % activeProduct.images.length;
+        }
+        renderGallery();
+      }
+    }, { passive: true });
+
+    closeBtn.addEventListener('click', closeProduct);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeProduct();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!modal.classList.contains('open')) return;
+      if (e.key === 'Escape') closeProduct();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        if (!activeProduct) return;
+        activeIndex = (activeIndex + 1) % activeProduct.images.length;
+        renderGallery();
+      }
+    });
+
+    grid.addEventListener('click', (e) => {
+      const card = e.target.closest('.card');
+      if (card) focusReturn = card;
+    });
+    grid.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const card = e.target.closest('.card');
+      if (card) focusReturn = card;
+    });
+
+    renderCards();
+  </script>
+</body>
+</html>
