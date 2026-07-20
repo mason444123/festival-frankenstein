@@ -229,6 +229,8 @@
       const ctx=logoCanvasContext;
       ctx.setTransform(dpr,0,0,dpr,0,0);
       ctx.clearRect(0,0,width,height);
+      ctx.globalCompositeOperation='source-over';
+      ctx.globalAlpha=1;
       const source=videoFailed ? bgfallback : video;
       const sourceWidth=source.videoWidth||source.naturalWidth, sourceHeight=source.videoHeight||source.naturalHeight;
       if (!sourceWidth || !sourceHeight) return;
@@ -240,6 +242,7 @@
       const style=getComputedStyle(logoText), fontSize=parseFloat(style.fontSize), spacing=parseFloat(style.letterSpacing)||0, glyphs=[...logoText.textContent];
       ctx.save();
       ctx.globalCompositeOperation='destination-in';
+      ctx.fillStyle='#fff';
       ctx.font=`${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
       ctx.textBaseline='middle';
       const glyphWidths=glyphs.map(glyph=>ctx.measureText(glyph).width), totalWidth=glyphWidths.reduce((sum,glyphWidth)=>sum+glyphWidth,0)+spacing*(glyphs.length-1);
