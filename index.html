@@ -19,12 +19,17 @@
     body.video-fallback #bgfallback { opacity:1; }
     body.video-fallback #bgvid { display:none; }
     #overlay-container { position:absolute; inset:0; background:rgba(0,0,0,.35); z-index:2; opacity:0; transition:opacity 1s ease; pointer-events:none; }
-    .hero-lockup { position:absolute; inset:0; z-index:3; width:100%; height:100%; color:#fff; text-align:center; pointer-events:none; }
-    /* Тот же negative-эффект, что у круга-курсора на restaurantonyx.com: белый source + difference инвертирует только пиксели под буквами. */
-    #overlay-logo { position:absolute; left:50%; top:50%; width:94vw; max-width:1120px; min-width:220px; display:block; opacity:0; color:#fff; mix-blend-mode:difference; font-family:Arial,Helvetica,sans-serif; font-size:clamp(66px,14.5vw,228px); font-weight:900; letter-spacing:-.09em; line-height:.76; text-transform:lowercase; transform:translate(-50%,-50%) rotate(9deg) scale(1.16); transition:transform 1.65s cubic-bezier(.16,1,.3,1) .12s,opacity .85s ease .12s; }
-    /* Fallback: если blend-режим недоступен, слово остаётся видимым светло-серым поверх видео. */
-    @supports not (mix-blend-mode: difference) { #overlay-logo { color:#e4e4e4; mix-blend-mode:normal; text-shadow:0 3px 26px rgba(0,0,0,.6); } }
-    body.no-blend #overlay-logo { color:#e4e4e4; mix-blend-mode:normal; text-shadow:0 3px 26px rgba(0,0,0,.6); }
+    .hero-lockup { position:absolute; inset:0; z-index:4; width:100%; height:100%; color:#fff; text-align:center; pointer-events:none; }
+    /* Реальный video-fill: второй синхронный кадр становится ч/б и виден только через маску букв. */
+    #logo-negative { display:none; position:absolute; inset:0; z-index:3; opacity:0; pointer-events:none; transition:opacity .85s ease .12s; -webkit-mask-image:url('assets/custom843-mask.svg'); mask-image:url('assets/custom843-mask.svg'); -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; -webkit-mask-position:center; mask-position:center; -webkit-mask-size:clamp(220px,94vw,1120px) auto; mask-size:clamp(220px,94vw,1120px) auto; }
+    @supports ((-webkit-mask-image:url('assets/custom843-mask.svg')) or (mask-image:url('assets/custom843-mask.svg'))) { #logo-negative { display:block; } }
+    #logo-negative .logo-negative-media { position:absolute; inset:0; width:100%; height:100%; min-width:100%; min-height:100%; object-fit:cover; object-position:center; transform:scale(1.045); filter:grayscale(1) invert(1) contrast(.62) brightness(1.06); }
+    #logoNegativeFallback { display:none; }
+    body.video-fallback #logoNegativeVideo { display:none; }
+    body.video-fallback #logoNegativeFallback { display:block; }
+    body.video-started.logo-mask-ready #logo-negative { opacity:1; }
+    #overlay-logo { position:absolute; left:50%; top:50%; width:94vw; max-width:1120px; min-width:220px; display:block; opacity:0; color:#e4e4e4; font-family:Arial,Helvetica,sans-serif; font-size:clamp(66px,14.5vw,228px); font-weight:900; letter-spacing:-.09em; line-height:.76; text-transform:lowercase; text-shadow:0 3px 26px rgba(0,0,0,.6); transform:translate(-50%,-50%) rotate(9deg) scale(1.16); transition:transform 1.65s cubic-bezier(.16,1,.3,1) .12s,opacity .85s ease .12s; }
+    body.logo-mask-ready #overlay-logo { color:transparent; text-shadow:none; }
     .hero-kicker { position:absolute; left:50%; width:max-content; max-width:88vw; margin:0; font-size:clamp(12px,1.35vw,20px); font-weight:800; letter-spacing:.1em; line-height:1.04; text-transform:uppercase; opacity:0; filter:blur(6px); transition:transform 1s cubic-bezier(.16,1,.3,1),opacity .55s ease,filter .8s ease; }
     .hero-kicker--top { top:29%; transform:translate(-50%,20px) rotate(-3deg); }.hero-kicker--bottom { top:67%; transform:translate(-50%,-20px) rotate(2deg); }
 
@@ -179,6 +184,13 @@
     </video>
     <img id="bgfallback" alt="" aria-hidden="true">
     <div id="overlay-container"></div>
+    <div id="logo-negative" aria-hidden="true">
+      <video id="logoNegativeVideo" class="logo-negative-media" autoplay muted loop playsinline preload="auto">
+        <source media="(max-width: 768px)" src="assets/hero-mobile.mp4" type="video/mp4">
+        <source src="assets/hero-desktop.mp4" type="video/mp4">
+      </video>
+      <img id="logoNegativeFallback" class="logo-negative-media" alt="" aria-hidden="true">
+    </div>
     <div class="hero-lockup">
       <p class="hero-kicker hero-kicker--top">Казань · 01 августа</p>
       <div id="overlay-logo" aria-label="custom843">custom843</div>
@@ -229,12 +241,21 @@
   </aside>
   <script>
     const video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container');
+    const logoVideo=document.getElementById('logoNegativeVideo'), logoFallback=document.getElementById('logoNegativeFallback');
     const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu'), mobileMenuBar=document.getElementById('mobileMenuBar'), siteBrand=document.getElementById('siteBrand'), bgfallback=document.getElementById('bgfallback');
     let projectRevealsStarted=false, overlayRevealed=false, videoFailed=false;
-    // Fallback видимости: без поддержки blend-режима слово рисуем обычным светло-серым цветом.
-    if (!(window.CSS && typeof CSS.supports==='function' && CSS.supports('mix-blend-mode','difference'))) document.body.classList.add('no-blend');
     const isMobile=window.matchMedia('(max-width:768px)').matches;
-    bgfallback.src = isMobile ? 'assets/hero-mobile-fallback.webp' : 'assets/hero-desktop-fallback.webp';
+    const fallbackSrc=isMobile ? 'assets/hero-mobile-fallback.webp' : 'assets/hero-desktop-fallback.webp';
+    bgfallback.src=fallbackSrc;
+    logoFallback.src=fallbackSrc;
+    const logoMaskSupported=window.CSS && typeof CSS.supports==='function' && (CSS.supports('-webkit-mask-image','url("assets/custom843-mask.svg")') || CSS.supports('mask-image','url("assets/custom843-mask.svg")'));
+    function markLogoMaskReady(){ if(logoMaskSupported) document.body.classList.add('logo-mask-ready'); }
+    logoVideo.addEventListener('loadeddata',markLogoMaskReady,{once:true});
+    logoFallback.addEventListener('load',()=>{ if(videoFailed) markLogoMaskReady(); },{once:true});
+    function syncLogoVideo(force=false){
+      if (!Number.isFinite(video.currentTime) || logoVideo.readyState<2) return;
+      if (force || Math.abs(logoVideo.currentTime-video.currentTime)>.08) logoVideo.currentTime=video.currentTime;
+    }
     function revealVideoOverlay() {
       if (overlayRevealed) return;
       overlayRevealed=true;
@@ -245,6 +266,7 @@
       if (videoFailed) return;
       videoFailed=true;
       document.body.classList.add('video-fallback');
+      if (logoFallback.complete && logoFallback.naturalWidth) markLogoMaskReady();
       revealVideoOverlay();
     }
     function startBackgroundVideo() {
@@ -252,12 +274,24 @@
       video.muted=true;
       video.defaultMuted=true;
       video.volume=0;
+      logoVideo.muted=true;
+      logoVideo.defaultMuted=true;
+      logoVideo.volume=0;
       const attempt=video.play();
       if (attempt && typeof attempt.then==='function') {
-        attempt.then(()=>{ if(!videoFailed){ video.style.opacity='1'; revealVideoOverlay(); } }).catch(activateFallback);
+        attempt.then(()=>{
+          if(videoFailed) return;
+          syncLogoVideo(true);
+          const logoAttempt=logoVideo.play();
+          if (logoAttempt && typeof logoAttempt.catch==='function') logoAttempt.catch(()=>{});
+          video.style.opacity='1';
+          revealVideoOverlay();
+        }).catch(activateFallback);
       } else revealVideoOverlay();
     }
     ['loadedmetadata','loadeddata','canplay','canplaythrough'].forEach(eventName=>video.addEventListener(eventName,startBackgroundVideo));
+    video.addEventListener('seeked',()=>syncLogoVideo(true));
+    setInterval(()=>syncLogoVideo(false),750);
     window.addEventListener('pageshow',startBackgroundVideo);
     document.addEventListener('visibilitychange',()=>{ if (!document.hidden) startBackgroundVideo(); });
     // Таймер безопасности: если через 2.5 секунды видео не идёт — переключаемся на fallback.
