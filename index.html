@@ -21,8 +21,8 @@
     #overlay-container { position:absolute; inset:0; background:rgba(0,0,0,.35); z-index:2; opacity:0; transition:opacity 1s ease; pointer-events:none; }
     .hero-lockup { position:absolute; inset:0; z-index:4; width:100%; height:100%; color:#fff; text-align:center; pointer-events:none; }
     /* Реальный video-fill: второй синхронный кадр становится ч/б и виден только через маску букв. */
-    #logo-negative { display:none; position:absolute; inset:0; z-index:3; opacity:0; pointer-events:none; transition:opacity .85s ease .12s; -webkit-mask-image:url('assets/custom843-mask.svg'); mask-image:url('assets/custom843-mask.svg'); -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; -webkit-mask-position:center; mask-position:center; -webkit-mask-size:clamp(220px,94vw,1120px) auto; mask-size:clamp(220px,94vw,1120px) auto; }
-    @supports ((-webkit-mask-image:url('assets/custom843-mask.svg')) or (mask-image:url('assets/custom843-mask.svg'))) { #logo-negative { display:block; } }
+    #logo-negative { display:none; position:absolute; inset:0; z-index:3; opacity:0; pointer-events:none; transition:opacity .85s ease .12s; -webkit-mask-image:url('assets/custom843-mask.svg?v=2'); mask-image:url('assets/custom843-mask.svg?v=2'); -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; -webkit-mask-position:center; mask-position:center; -webkit-mask-size:clamp(220px,94vw,1120px) auto; mask-size:clamp(220px,94vw,1120px) auto; }
+    @supports ((-webkit-mask-image:url('assets/custom843-mask.svg?v=2')) or (mask-image:url('assets/custom843-mask.svg?v=2'))) { #logo-negative { display:block; } }
     #logo-negative .logo-negative-media { position:absolute; inset:0; width:100%; height:100%; min-width:100%; min-height:100%; object-fit:cover; object-position:center; transform:scale(1.045); filter:grayscale(1) invert(1) contrast(.62) brightness(1.06); }
     #logoNegativeFallback { display:none; }
     body.video-fallback #logoNegativeVideo { display:none; }
@@ -248,7 +248,7 @@
     const fallbackSrc=isMobile ? 'assets/hero-mobile-fallback.webp' : 'assets/hero-desktop-fallback.webp';
     bgfallback.src=fallbackSrc;
     logoFallback.src=fallbackSrc;
-    const logoMaskSupported=window.CSS && typeof CSS.supports==='function' && (CSS.supports('-webkit-mask-image','url("assets/custom843-mask.svg")') || CSS.supports('mask-image','url("assets/custom843-mask.svg")'));
+    const logoMaskSupported=window.CSS && typeof CSS.supports==='function' && (CSS.supports('-webkit-mask-image','url("assets/custom843-mask.svg?v=2")') || CSS.supports('mask-image','url("assets/custom843-mask.svg?v=2")'));
     function markLogoMaskReady(){ if(logoMaskSupported) document.body.classList.add('logo-mask-ready'); }
     logoVideo.addEventListener('loadeddata',markLogoMaskReady,{once:true});
     logoFallback.addEventListener('load',()=>{ if(videoFailed) markLogoMaskReady(); },{once:true});
