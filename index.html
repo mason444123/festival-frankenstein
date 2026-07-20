@@ -20,8 +20,11 @@
     body.video-fallback #bgvid { display:none; }
     #overlay-container { position:absolute; inset:0; background:rgba(0,0,0,.35); z-index:2; opacity:0; transition:opacity 1s ease; pointer-events:none; }
     .hero-lockup { position:absolute; inset:0; z-index:3; width:100%; height:100%; color:#fff; text-align:center; pointer-events:none; }
-    /* Серый source-color в режиме color забирает яркость фона и убирает его насыщенность только в форме букв. */
-    #overlay-logo { position:absolute; left:50%; top:50%; width:94vw; max-width:1120px; min-width:220px; display:block; opacity:0; color:#c8c8c8; mix-blend-mode:color; font-family:Arial,Helvetica,sans-serif; font-size:clamp(66px,14.5vw,228px); font-weight:900; letter-spacing:-.09em; line-height:.76; text-transform:lowercase; transform:translate(-50%,-50%) rotate(9deg) scale(1.16); transition:transform 1.65s cubic-bezier(.16,1,.3,1) .12s,opacity .85s ease .12s; }
+    /* Тот же negative-эффект, что у круга-курсора на restaurantonyx.com: белый source + difference инвертирует только пиксели под буквами. */
+    #overlay-logo { position:absolute; left:50%; top:50%; width:94vw; max-width:1120px; min-width:220px; display:block; opacity:0; color:#fff; mix-blend-mode:difference; font-family:Arial,Helvetica,sans-serif; font-size:clamp(66px,14.5vw,228px); font-weight:900; letter-spacing:-.09em; line-height:.76; text-transform:lowercase; transform:translate(-50%,-50%) rotate(9deg) scale(1.16); transition:transform 1.65s cubic-bezier(.16,1,.3,1) .12s,opacity .85s ease .12s; }
+    /* Fallback: если blend-режим недоступен, слово остаётся видимым светло-серым поверх видео. */
+    @supports not (mix-blend-mode: difference) { #overlay-logo { color:#e4e4e4; mix-blend-mode:normal; text-shadow:0 3px 26px rgba(0,0,0,.6); } }
+    body.no-blend #overlay-logo { color:#e4e4e4; mix-blend-mode:normal; text-shadow:0 3px 26px rgba(0,0,0,.6); }
     .hero-kicker { position:absolute; left:50%; width:max-content; max-width:88vw; margin:0; font-size:clamp(12px,1.35vw,20px); font-weight:800; letter-spacing:.1em; line-height:1.04; text-transform:uppercase; opacity:0; filter:blur(6px); transition:transform 1s cubic-bezier(.16,1,.3,1),opacity .55s ease,filter .8s ease; }
     .hero-kicker--top { top:29%; transform:translate(-50%,20px) rotate(-3deg); }.hero-kicker--bottom { top:67%; transform:translate(-50%,-20px) rotate(2deg); }
 
@@ -126,6 +129,16 @@
     body.menu-open { overflow:hidden; } body.ticket-open { overflow:hidden; }
 
   </style>
+  <noscript><style>
+    /* Без JS шторы и intro не запускаются: слово-герой обязано остаться видимым. */
+    .curtain { display:none !important; }
+    #bgvid { display:none; }
+    #overlay-container { opacity:1; }
+    #overlay-logo { opacity:1; color:#e4e4e4; mix-blend-mode:normal; text-shadow:0 3px 26px rgba(0,0,0,.6); transform:translate(-50%,-50%) rotate(-2.5deg) scale(1); }
+    .hero-kicker { opacity:.96; filter:none; transform:translate(-50%,0) rotate(0); }
+    .hero-scroll-cue, .tmenu-mobile { display:none !important; }
+    .site-brand { opacity:1; pointer-events:auto; }
+  </style></noscript>
 </head>
 <body>
   <a class="site-brand" id="siteBrand" href="./" aria-label="Custom 843 — главная"><img src="assets/custom-logo.png" alt="Custom 843"></a>
@@ -218,6 +231,8 @@
     const video=document.getElementById('bgvid'), overlay=document.getElementById('overlay-container');
     const menuTrigger=document.getElementById('menuTrigger'), menu=document.getElementById('siteMenu'), mobileMenuBar=document.getElementById('mobileMenuBar'), siteBrand=document.getElementById('siteBrand'), bgfallback=document.getElementById('bgfallback');
     let projectRevealsStarted=false, overlayRevealed=false, videoFailed=false;
+    // Fallback видимости: без поддержки blend-режима слово рисуем обычным светло-серым цветом.
+    if (!(window.CSS && typeof CSS.supports==='function' && CSS.supports('mix-blend-mode','difference'))) document.body.classList.add('no-blend');
     const isMobile=window.matchMedia('(max-width:768px)').matches;
     bgfallback.src = isMobile ? 'assets/hero-mobile-fallback.webp' : 'assets/hero-desktop-fallback.webp';
     function revealVideoOverlay() {
