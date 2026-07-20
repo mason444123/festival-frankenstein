@@ -249,10 +249,10 @@
       glyphs.forEach((glyph,index)=>{ ctx.fillText(glyph,x,0); x+=glyphWidths[index]+spacing; });
       ctx.restore();
     }
-    function scheduleNegativeLogo() {
-      drawNegativeLogo();
-      if (video.requestVideoFrameCallback) video.requestVideoFrameCallback(scheduleNegativeLogo);
-      else requestAnimationFrame(scheduleNegativeLogo);
+    let lastNegativeLogoFrame=0;
+    function scheduleNegativeLogo(now=0) {
+      if (now-lastNegativeLogoFrame>=33) { drawNegativeLogo(); lastNegativeLogoFrame=now; }
+      requestAnimationFrame(scheduleNegativeLogo);
     }
     window.addEventListener('resize',drawNegativeLogo);
     scheduleNegativeLogo();
