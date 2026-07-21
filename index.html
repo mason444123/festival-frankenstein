@@ -422,7 +422,7 @@
         entries.forEach(entry=>{
           if (entry.isIntersecting) { ticketCta.classList.add('is-revealed'); ctaReveal.unobserve(ticketCta); }
         });
-      }, { threshold:0.35, rootMargin:'0px 0px -10% 0px' });
+      }, { threshold:0.05, rootMargin:'0px 0px -5% 0px' });
       ctaReveal.observe(ticketCta);
     } else if (ticketCta) {
       ticketCta.classList.add('is-revealed');
